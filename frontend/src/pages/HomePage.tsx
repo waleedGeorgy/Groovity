@@ -27,9 +27,9 @@ const HomePage = () => {
 
 
     return (
-        <div className="h-full border border-muted rounded-lg overflow-hidden bg-gradient-to-b from-card to-indigo-950">
+        <div className="h-full border border-muted rounded-lg overflow-hidden">
             <TopBar />
-            <ScrollArea className="h-[calc(100vh-(163px))] space-y-1">
+            <ScrollArea className="h-[calc(100vh-(163px))] space-y-1 bg-gradient-to-b from-card to-indigo-950">
                 <FeaturedSongsSection loading={isLoading} songs={featuredSongs} error={error} />
                 <SongsGridSection loading={isLoading} error={error} title="For You" icon={<Star className="size-6" />} songs={personalizedSongs} />
                 <SongsGridSection loading={isLoading} error={error} title="Trending" icon={<TrendingUp className="size-6" />} songs={trendingSongs} />
