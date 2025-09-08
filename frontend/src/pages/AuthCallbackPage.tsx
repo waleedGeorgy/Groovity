@@ -32,7 +32,7 @@ const AuthCallbackPage = () => {
 
     return (
         <div className="h-screen flex items-center justify-center">
-            <Card className="max-w-4xl">
+            <Card className="max-w-2xl">
                 <CardContent className="space-y-2 flex flex-col justify-center items-center">
                     <Loader2 className="size-12 text-indigo-500 animate-spin mb-4" />
                     <h2 className="text-3xl font-bold">Welcome! You are being logged in.</h2>

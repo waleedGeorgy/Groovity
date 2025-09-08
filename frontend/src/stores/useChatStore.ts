@@ -23,7 +23,8 @@ interface chatStoreProps {
   fetchMessages: (userId: string) => Promise<void>;
 }
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
 const socket = io(BASE_URL, {
   autoConnect: false,
@@ -112,7 +113,7 @@ export const useChatStore = create<chatStoreProps>((set, get) => ({
           });
         }
       );
-      
+
       set({ isUserConnected: true });
     }
   },

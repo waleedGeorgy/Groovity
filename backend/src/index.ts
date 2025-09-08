@@ -5,6 +5,8 @@ import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
 import path from "path";
 import { createServer } from "http";
+import cron from "node-cron";
+import fs from "fs";
 import { connectDB } from "./lib/db.ts";
 import { initializeSocket } from "./lib/socket.ts";
 import userRoutes from "./routes/user.route.ts";
@@ -44,6 +46,24 @@ app.use(
   })
 );
 
+const tempFilesFolder = path.join(process.cwd(), "tmp");
+
+cron.schedule("4 * * * *", () => {
+  if (fs.existsSync(tempFilesFolder)) {
+    fs.readdir(tempFilesFolder, (err, files) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      for (const file of files) {
+        fs.unlink(path.join(tempFilesFolder, file), (err) => {
+          console.log(err);
+        });
+      }
+    });
+  }
+});
+
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -58,6 +78,13 @@ app.use((err, req, res, next) => {
         : err.message,
   });
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+  });
+}
 
 server.listen(SERVER_PORT, () => {
   console.log(`Server running on http://localhost:${SERVER_PORT}`);
