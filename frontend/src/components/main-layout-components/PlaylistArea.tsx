@@ -4,8 +4,10 @@ import { Library } from "lucide-react"
 import { useMusicStore } from "@/stores/useMusicStore";
 import { ScrollArea } from "../ui/scroll-area"
 import PlaylistSkeleton from "../skeletons/PlaylistSkeleton";
+import { useUser } from "@clerk/clerk-react";
 
 const PlaylistArea = () => {
+    const { user } = useUser();
     const { albums, getAllAlbums, isLoading } = useMusicStore();
 
     useEffect(() => {
@@ -15,7 +17,7 @@ const PlaylistArea = () => {
     return (
         <div className="flex flex-1 flex-col justify-center p-3 px-3 bg-popover rounded-xl mt-2 border">
             <h2 className="flex flex-row items-center px-2 gap-1 mb-2"><Library className="size-6 shrink-0" /><span className="hidden md:inline">Albums</span></h2>
-            <ScrollArea className="h-[calc(100vh-256px)]">
+            <ScrollArea className={user ? `h-[calc(100vh-256px)]` : `h-[calc(100vh-220px)]`}>
                 <div className="space-y-1">
                     {isLoading ?
                         (
@@ -35,7 +37,6 @@ const PlaylistArea = () => {
                     }
                 </div>
             </ScrollArea>
-
         </div>
     )
 }
