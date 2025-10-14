@@ -58,7 +58,7 @@ export const usePlaybackStore = create<playbackStoreProps>((set, get) => ({
     });
   },
 
-  setCurrentSong: (song: Song | null) => {
+  setCurrentSong: (song) => {
     if (!song) return;
 
     const songIndex = get().songsQueue.findIndex((s) => s._id === song._id);
