@@ -2,7 +2,16 @@ import { Album } from "./../models/album.model.ts";
 import { Song } from "./../models/song.model.ts";
 import cloudinary from "../lib/cloudinary.ts";
 
-const cloudinaryUploader = async (file) => {
+interface UploadedFile {
+  tempFilePath: string;
+  name: string;
+  mimetype: string;
+  data: Buffer;
+  size: number;
+  md5: string;
+}
+
+const cloudinaryUploader = async (file: UploadedFile): Promise<string> => {
   try {
     const result = await cloudinary.uploader.upload(file.tempFilePath, {
       resource_type: "auto",
@@ -15,7 +24,11 @@ const cloudinaryUploader = async (file) => {
   }
 };
 
-export const createSong = async (req, res, next) => {
+export const createSong = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     if (!req.files || !req.files.imageFile) {
       return res.status(400).json({ message: "Please provide an image file." });
@@ -69,7 +82,11 @@ export const createSong = async (req, res, next) => {
   }
 };
 
-export const deleteSong = async (req, res, next) => {
+export const deleteSong = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const { songID } = req.params;
     if (!songID) return res.status(400).json({ message: "Invalid song ID" });
@@ -92,7 +109,11 @@ export const deleteSong = async (req, res, next) => {
   }
 };
 
-export const createAlbum = async (req, res, next) => {
+export const createAlbum = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     if (!req.files || !req.files.imageFile) {
       return res.status(400).json({ message: "Please add an album image." });
@@ -135,7 +156,11 @@ export const createAlbum = async (req, res, next) => {
   }
 };
 
-export const deleteAlbum = async (req, res, next) => {
+export const deleteAlbum = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const { albumID } = req.params;
     if (!albumID) return res.status(400).json({ message: "Invalid album ID" });
@@ -154,7 +179,7 @@ export const deleteAlbum = async (req, res, next) => {
   }
 };
 
-export const getAdminStatus = (req, res, next) => {
+export const getAdminStatus = (req: any, res: any, next: any): void => {
   try {
     return res.status(200).json({ admin: true });
   } catch (error) {

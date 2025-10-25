@@ -1,7 +1,9 @@
 import { Server } from "socket.io";
+import { Server as HttpServer } from 'http';
+import { Server as HttpsServer } from 'https';
 import { Message } from "../models/message.model.ts";
 
-export const initializeSocket = (server) => {
+export const initializeSocket = (server: HttpServer | HttpsServer) => {
   const io = new Server(server, {
     cors: {
       origin: "http://localhost:5173",
@@ -43,7 +45,7 @@ export const initializeSocket = (server) => {
           io.to(receiverSocketID).emit("receive_message", newMessage);
 
         socket.emit("message_sent", newMessage);
-      } catch (error) {
+      } catch (error: any) {
         socket.emit("error_message", error.message);
         console.log(error);
       }

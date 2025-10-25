@@ -1,7 +1,11 @@
 import { Message } from "../models/message.model.ts";
 import { User } from "../models/user.model.ts";
 
-export const getAllUsers = async (req, res, next) => {
+export const getAllUsers = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const users = await User.find({ clerkID: { $ne: req.auth().userId } });
     if (!users)
@@ -14,7 +18,11 @@ export const getAllUsers = async (req, res, next) => {
   }
 };
 
-export const getAllMessages = async (req, res, next) => {
+export const getAllMessages = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const { userId } = req.params;
     const myID = req.auth().userId;

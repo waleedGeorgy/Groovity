@@ -1,6 +1,6 @@
 import { clerkClient, getAuth } from "@clerk/express";
 
-export const protectRoute = (req, res, next) => {
+export const protectRoute = (req: any, res: any, next: any): void => {
   try {
     const { userId } = getAuth(req);
     if (!userId) {
@@ -15,7 +15,11 @@ export const protectRoute = (req, res, next) => {
   }
 };
 
-export const checkAdmin = async (req, res, next) => {
+export const checkAdmin = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const { userId } = getAuth(req);
     const user = await clerkClient.users.getUser(userId as string);

@@ -2,7 +2,11 @@ import { User } from "./../models/user.model.ts";
 import { Album } from "./../models/album.model.ts";
 import { Song } from "./../models/song.model.ts";
 
-export const getAllStats = async (req, res, next) => {
+export const getAllStats = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const [totalSongs, totalAlbums, totalUsers, uniqueArtists] =
       await Promise.all([
@@ -27,14 +31,12 @@ export const getAllStats = async (req, res, next) => {
         ]),
       ]);
 
-    return res
-      .status(200)
-      .json({
-        totalSongs,
-        totalUsers,
-        totalAlbums,
-        totalArtists: uniqueArtists[0]?.count || 0,
-      });
+    return res.status(200).json({
+      totalSongs,
+      totalUsers,
+      totalAlbums,
+      totalArtists: uniqueArtists[0]?.count || 0,
+    });
   } catch (error) {
     console.log(error);
     next(error);

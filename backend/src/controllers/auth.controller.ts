@@ -1,6 +1,10 @@
 import { User } from "../models/user.model.ts";
 
-export const authCallback = async (req, res, next) => {
+export const authCallback = async (
+  req: any,
+  res: any,
+  next: any
+): Promise<void> => {
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
