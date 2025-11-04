@@ -39,7 +39,6 @@ export const getFeaturedSongs = async (
         },
       },
     ]);
-
     if (!featuredSongs)
       return res
         .status(400)

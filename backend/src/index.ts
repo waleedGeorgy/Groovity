@@ -70,6 +70,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
+
 app.use((err, req, res, next) => {
   res.status(500).json({
     message:
