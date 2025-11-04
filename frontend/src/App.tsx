@@ -10,7 +10,6 @@ import AdminPage from "./pages/AdminPage";
 import ErrorPage from "./pages/ErrorPage";
 
 function App() {
-  // todo: Improve responsiveness
   const router = createBrowserRouter([
     {
       element: <MainLayout />,
