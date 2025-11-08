@@ -18,7 +18,7 @@ export const authCallback = async (
 
       return res
         .status(200)
-        .json({ success: true, message: "User processed successfully" });
+        .json({ success: true, message: "User authenticated successfully" });
     }
 
     return res.status(200).json({ success: true });

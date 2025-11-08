@@ -1,7 +1,6 @@
 import { Song } from "./../models/song.model.ts";
 
 //todo: Implement a more advanced algorithm for featured, personalized and trending songs
-
 export const getAllSongs = async (
   req: any,
   res: any,
