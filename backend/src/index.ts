@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type NextFunction } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
@@ -71,7 +71,7 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err: Error, req: any, res: any, next: NextFunction) => {
   res.status(500).json({
     message:
       process.env.NODE_ENV === "production"
