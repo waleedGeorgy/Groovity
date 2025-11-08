@@ -1,11 +1,11 @@
 import { Trash2, Disc3, UserStar, Settings, Music2, Clock4 } from "lucide-react"
+import { useMusicStore } from "@/stores/useMusicStore"
+import { durationInMinutes } from "@/functions"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { useMusicStore } from "@/stores/useMusicStore"
 import { ScrollArea } from "../ui/scroll-area"
 import AddSongButton from "./AddSongButton"
-import { durationInMinutes } from "@/functions"
 
 const SongsTab = () => {
   const { songs, isSongsLoading, error, deleteSong } = useMusicStore();

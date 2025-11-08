@@ -1,9 +1,9 @@
-import { usePlaybackStore } from "@/stores/usePlaybackStore"
 import { useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
 import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume1, Volume, Volume2, VolumeX } from "lucide-react";
-import { Slider } from "../ui/slider";
 import { durationInMinutes } from "@/functions";
+import { usePlaybackStore } from "@/stores/usePlaybackStore"
+import { Button } from "../ui/button";
+import { Slider } from "../ui/slider";
 
 const PlaybackControls = () => {
   const { currentSong, isSongPlaying, toggleSongPlay, playNextSong, playPrevSong } = usePlaybackStore();

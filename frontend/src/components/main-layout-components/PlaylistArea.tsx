@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
 import { Library } from "lucide-react"
+import { useUser } from "@clerk/clerk-react";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { ScrollArea } from "../ui/scroll-area"
 import PlaylistSkeleton from "../skeletons/PlaylistSkeleton";
-import { useUser } from "@clerk/clerk-react";
 
 const PlaylistArea = () => {
     const { user } = useUser();

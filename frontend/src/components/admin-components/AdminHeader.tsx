@@ -1,7 +1,7 @@
-import { UserButton } from "@clerk/clerk-react";
 import { Link } from "react-router";
-import { Button } from "../ui/button";
+import { UserButton } from "@clerk/clerk-react";
 import { LayoutDashboard } from "lucide-react";
+import { Button } from "../ui/button";
 
 const AdminHeader = () => {
     return (

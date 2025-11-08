@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 import { SignedOut, UserButton } from "@clerk/clerk-react";
 import { LayoutDashboard } from "lucide-react";
-import SignInWithGoogleButton from "./SignInWithGoogleButton";
 import { useAuthStore } from "@/stores/useAuthStore";
+import SignInWithGoogleButton from "./SignInWithGoogleButton";
 import { Button } from "./ui/button";
 import logo from "@/assets/icon.png";
 

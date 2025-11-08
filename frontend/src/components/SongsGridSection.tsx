@@ -1,9 +1,9 @@
+import { Pause, Play } from "lucide-react";
 import type { Song } from "@/types";
-import SongsGridSkeleton from "./skeletons/SongsGridSkeleton";
 import { durationInMinutes } from "@/functions";
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
+import SongsGridSkeleton from "./skeletons/SongsGridSkeleton";
 import { Button } from "./ui/button";
-import { Pause, Play } from "lucide-react";
 
 interface songsGridProps {
   songs: Song[],

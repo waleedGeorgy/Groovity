@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
 import { Headphones, Music4, Users } from "lucide-react";
+import { useUser } from "@clerk/clerk-react";
 import { useChatStore } from "@/stores/useChatStore"
 import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";

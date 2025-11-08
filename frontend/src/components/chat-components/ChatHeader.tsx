@@ -1,7 +1,7 @@
-import { AvatarFallback } from "@radix-ui/react-avatar"
-import { Avatar, AvatarImage } from "../ui/avatar"
-import { useChatStore } from "@/stores/useChatStore"
 import { X } from "lucide-react";
+import { AvatarFallback } from "@radix-ui/react-avatar"
+import { useChatStore } from "@/stores/useChatStore"
+import { Avatar, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button";
 
 const ChatHeader = () => {

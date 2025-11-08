@@ -1,9 +1,9 @@
 import { Music2, Pause, Play } from "lucide-react"
 import type { Song } from "@/types";
-import FeaturedSongsSkeleton from "./skeletons/FeaturedSongsSkeleton";
 import { durationInMinutes } from "@/functions";
-import { Button } from "./ui/button";
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
+import FeaturedSongsSkeleton from "./skeletons/FeaturedSongsSkeleton";
+import { Button } from "./ui/button";
 
 interface featuredSongsProps {
     loading: boolean,

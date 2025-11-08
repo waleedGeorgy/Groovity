@@ -1,9 +1,9 @@
 import { Disc3, Library, Settings, Trash2, UserStar, Calendar1, Music } from "lucide-react"
+import { useMusicStore } from "@/stores/useMusicStore"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { ScrollArea } from "../ui/scroll-area"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { useMusicStore } from "@/stores/useMusicStore"
 import AddAlbumButton from "./AddAlbumButton"
 
 const AlbumsTab = () => {

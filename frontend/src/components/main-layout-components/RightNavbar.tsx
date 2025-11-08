@@ -1,6 +1,6 @@
 import { Link } from "react-router"
-import { SignedIn } from "@clerk/clerk-react"
 import { MessageCircle, HomeIcon } from "lucide-react"
+import { SignedIn } from "@clerk/clerk-react"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "../ui/button"
 
