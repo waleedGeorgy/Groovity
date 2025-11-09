@@ -31,7 +31,7 @@ export const createSong = async (
 ): Promise<void> => {
   try {
     if (!req.files || !req.files.imageFile) {
-      return res.status(400).json({ message: "Please provide an image file." });
+      return res.status(400).json({ message: "Please provide an image." });
     }
     if (!req.files || !req.files.audioFile) {
       return res.status(400).json({ message: "Please provide an audio file." });
@@ -43,10 +43,10 @@ export const createSong = async (
     const { title, artist, duration, albumID } = req.body;
 
     if (!title || title.trim().length === 0) {
-      return res.status(400).json({ message: "Please provide a title." });
+      return res.status(400).json({ message: "Please provide a song title." });
     }
     if (!artist || artist.trim().length === 0) {
-      return res.status(400).json({ message: "Please provide an artist." });
+      return res.status(400).json({ message: "Please provide a song artist." });
     }
     if (!duration || duration === 0) {
       return res
