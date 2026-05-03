@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 import AdminDashboard from "@/components/admin-components/AdminDashboard";
 import AdminHeader from "@/components/admin-components/AdminHeader";
 import AdminMusicControls from "@/components/admin-components/AdminMusicControls";
@@ -7,16 +8,20 @@ import { useMusicStore } from "@/stores/useMusicStore";
 
 const AdminPage = () => {
     const { isAdmin } = useAuthStore();
-    const { getAllSongs, getAllAlbums, getAllStats } = useMusicStore();
+
+    const { getAllSongs, getAllAlbums, getAllStats } = useMusicStore(useShallow(state => ({
+        getAllSongs: state.getAllSongs,
+        getAllAlbums: state.getAllAlbums,
+        getAllStats: state.getAllStats
+    })));
 
     useEffect(() => {
         void getAllSongs();
         void getAllAlbums();
         void getAllStats();
-
     }, [getAllSongs, getAllAlbums, getAllStats]);
 
-    if (!isAdmin) return <div><h1>Unauthorized Access</h1></div>
+    if (!isAdmin) throw new Error('Unauthorized. Admin-only.');
 
     return (
         <div className="min-h-screen py-6 px-6 sm:px-12 space-y-8">

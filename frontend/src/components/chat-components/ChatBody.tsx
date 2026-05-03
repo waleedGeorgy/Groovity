@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useUser } from "@clerk/clerk-react";
 import { useChatStore } from "@/stores/useChatStore"
 import { ScrollArea } from "../ui/scroll-area"
@@ -16,14 +17,17 @@ const formatTime = (date: string) => {
 const ChatBody = () => {
     const { user } = useUser();
 
-    const { messages, selectedUser, isMessagesLoading } = useChatStore();
+    const { messages, selectedUser, isMessagesLoading } = useChatStore(useShallow(state => ({
+        messages: state.messages,
+        selectedUser: state.selectedUser,
+        isMessagesLoading: state.isMessagesLoading
+    })));
 
     const chatEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (chatEndRef.current && messages) {
+        if (chatEndRef.current && messages)
             chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-        }
     }, [messages]);
 
     // todo: Add button that jumps to the end of the chat
@@ -32,9 +36,9 @@ const ChatBody = () => {
         <ScrollArea className='h-[calc(100vh-300px)] pt-2'>
             <div className='px-4 space-y-2'>
                 {isMessagesLoading ?
-                    (<ChatMessagesSkeleton />)
+                    <ChatMessagesSkeleton />
                     :
-                    (messages.map((message) => (
+                    messages.map((message) => (
                         <div
                             key={message._id}
                             className={`flex items-start gap-3 ${message.senderID === user?.id ? "flex-row-reverse" : ""
@@ -42,9 +46,7 @@ const ChatBody = () => {
                         >
                             <Avatar className='size-7'>
                                 <AvatarImage
-                                    src={
-                                        message.senderID === user?.id ? user?.imageUrl : selectedUser?.imageURL
-                                    }
+                                    src={message.senderID === user?.id ? user?.imageUrl : selectedUser?.imageURL}
                                 />
                                 <AvatarFallback>
                                     {message.senderID === user?.id ? user?.fullName?.[0] : selectedUser?.name[0]}
@@ -59,7 +61,7 @@ const ChatBody = () => {
                                 </small>
                             </div>
                         </div>
-                    )))
+                    ))
                 }
                 <div ref={chatEndRef} />
             </div>

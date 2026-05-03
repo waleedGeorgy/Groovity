@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@clerk/express':
-        specifier: ^1.7.26
-        version: 1.7.26(express@5.1.0)(react@19.1.1)
       cloudinary:
         specifier: ^2.7.0
         version: 2.7.0
@@ -36,6 +33,9 @@ importers:
         specifier: ^4.8.1
         version: 4.8.1
     devDependencies:
+      '@clerk/express':
+        specifier: ^1.7.26
+        version: 1.7.26(express@5.1.0)(react@19.1.1)
       '@types/cors':
         specifier: ^2.8.19
         version: 2.8.19

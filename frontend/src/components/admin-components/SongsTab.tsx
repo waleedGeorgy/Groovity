@@ -41,7 +41,6 @@ const SongsTab = () => {
             <TableHeader className="sticky">
               <TableRow className="font-roboto text-base p-4 opacity-60">
                 <TableHead><span className="flex items-center gap-1"><Disc3 className="size-4 inline" />Title</span></TableHead>
-
                 <TableHead><span className="flex items-center gap-1"><UserStar className="size-4 inline" />Artist</span></TableHead>
                 <TableHead><span className="flex items-center gap-1"><Clock4 className="size-4 inline" />Duration</span></TableHead>
                 <TableHead><span className="flex justify-end items-center gap-1"><Settings className="size-4 inline" />Actions</span></TableHead>

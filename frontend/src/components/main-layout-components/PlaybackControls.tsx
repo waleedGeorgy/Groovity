@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { Pause, Play, Repeat, Shuffle, SkipBack, SkipForward, Volume1, Volume, Volume2, VolumeX } from "lucide-react";
 import { durationInMinutes } from "@/functions";
 import { usePlaybackStore } from "@/stores/usePlaybackStore"
@@ -6,7 +7,13 @@ import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 
 const PlaybackControls = () => {
-  const { currentSong, isSongPlaying, toggleSongPlay, playNextSong, playPrevSong } = usePlaybackStore();
+  const { currentSong, isSongPlaying, toggleSongPlay, playNextSong, playPrevSong } = usePlaybackStore(useShallow(state => ({
+    currentSong: state.currentSong,
+    isSongPlaying: state.isSongPlaying,
+    toggleSongPlay: state.toggleSongPlay,
+    playNextSong: state.playNextSong,
+    playPrevSong: state.playPrevSong
+  })));
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -20,9 +27,9 @@ const PlaybackControls = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateSongTime = () => { setCurrentTime(audio.currentTime) };
-    const updateSongDuration = () => { setDuration(audio.duration) };
-    const handleSongEnd = () => { usePlaybackStore.setState({ isSongPlaying: false }) };
+    const updateSongTime = () => setCurrentTime(audio.currentTime)
+    const updateSongDuration = () => setDuration(audio.duration)
+    const handleSongEnd = () => usePlaybackStore.setState({ isSongPlaying: false })
 
     audio.addEventListener("timeupdate", updateSongTime);
     audio.addEventListener("loadedmetadata", updateSongDuration);
@@ -49,7 +56,7 @@ const PlaybackControls = () => {
               <img
                 src={currentSong.imageURL}
                 alt={currentSong.title}
-                className='size-10 sm:size-14 object-cover aspect-square rounded-md'
+                className='size-10 sm:size-14 object-cover aspect-square rounded-md border'
               />
               <div className='flex-1 min-w-0 inline-block'>
                 <h2 className='truncate text-sm sm:text-base'>
@@ -129,10 +136,10 @@ const PlaybackControls = () => {
                 }
               }
             }}>
-              {volume === 0 && (<VolumeX className='h-4 w-4' />)}
-              {volume > 0 && volume <= 33 && (<Volume className='h-4 w-4' />)}
-              {volume > 33 && volume <= 66 && (<Volume1 className='h-4 w-4' />)}
-              {volume > 66 && volume <= 100 && (<Volume2 className='h-4 w-4' />)}
+              {volume === 0 && (<VolumeX className='size-4' />)}
+              {volume > 0 && volume <= 33 && (<Volume className='size-4' />)}
+              {volume > 33 && volume <= 66 && (<Volume1 className='size-4' />)}
+              {volume > 66 && volume <= 100 && (<Volume2 className='size-4' />)}
             </Button>
             <Slider
               value={[volume]}
@@ -141,9 +148,7 @@ const PlaybackControls = () => {
               className='w-28 hover:cursor-grab active:cursor-grabbing'
               onValueChange={(value) => {
                 setVolume(value[0]);
-                if (audioRef.current) {
-                  audioRef.current.volume = value[0] / 100;
-                }
+                if (audioRef.current) audioRef.current.volume = value[0] / 100;
               }}
             />
           </div>

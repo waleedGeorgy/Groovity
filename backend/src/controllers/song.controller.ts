@@ -1,11 +1,12 @@
-import { Song } from "./../models/song.model.ts";
+import { type NextFunction, type Request, type Response } from "express";
+import { Song } from "../models/song.model.ts";
 
-//todo: Implement a more advanced algorithm for featured, personalized and trending songs
+//todo: Implement a more advanced algorithm for suggesting songs
 export const getAllSongs = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const songs = await Song.find().sort({ _id: -1 });
     if (!songs) return res.status(400).json({ message: "No songs found" });
@@ -18,10 +19,10 @@ export const getAllSongs = async (
 };
 
 export const getFeaturedSongs = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const featuredSongs = await Song.aggregate([
       {
@@ -51,10 +52,10 @@ export const getFeaturedSongs = async (
 };
 
 export const getPersonalizedSongs = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const personalizedSongs = await Song.aggregate([
       {
@@ -84,10 +85,10 @@ export const getPersonalizedSongs = async (
 };
 
 export const getTrendingSongs = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const trendingSongs = await Song.aggregate([
       {

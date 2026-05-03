@@ -166,10 +166,11 @@ export const useMusicStore = create<MusicStoreProps>()((set) => ({
       set({ isSongsLoading: false });
     }
   },
+
   getAllStats: async () => {
     set({ isStatsLoading: true, error: null });
     try {
-      const response = await axiosInstance.get<Stats>("/stats");
+      const response = await axiosInstance.get<Stats>("/admin/stats");
       set({ stats: response.data });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
@@ -184,6 +185,7 @@ export const useMusicStore = create<MusicStoreProps>()((set) => ({
       set({ isStatsLoading: false });
     }
   },
+
   deleteSong: async (songId) => {
     set({ isLoading: true, error: null });
     try {
@@ -206,6 +208,7 @@ export const useMusicStore = create<MusicStoreProps>()((set) => ({
       set({ isLoading: false });
     }
   },
+
   deleteAlbum: async (albumId) => {
     set({ isLoading: true, error: null });
     try {
@@ -215,7 +218,7 @@ export const useMusicStore = create<MusicStoreProps>()((set) => ({
         songs: state.songs.map((song) =>
           song.albumID === state.albums.find((a) => a._id === albumId)?.title
             ? { ...song, album: null }
-            : song
+            : song,
         ),
       }));
       createToast("success", "Album deleted successfully");

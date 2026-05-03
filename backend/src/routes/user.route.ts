@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { protectRoute } from "../middleware/auth.middleware.ts";
 import { getAllMessages, getAllUsers } from "../controllers/user.controller.ts";
+import { requireAuth } from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
-router.get("/", protectRoute, getAllUsers);
-router.get("/messages/:userId", protectRoute, getAllMessages);
+router.get("/", requireAuth, getAllUsers);
+router.get("/messages/:userId", requireAuth, getAllMessages);
 
 export default router;

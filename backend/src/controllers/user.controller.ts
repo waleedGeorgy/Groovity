@@ -1,13 +1,16 @@
+import { type NextFunction, type Request, type Response } from "express";
 import { Message } from "../models/message.model.ts";
 import { User } from "../models/user.model.ts";
+import { getAuth } from "@clerk/express";
 
 export const getAllUsers = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const users = await User.find({ clerkID: { $ne: req.auth().userId } });
+    const { userId } = getAuth(req);
+    const users = await User.find({ clerkID: { $ne: userId } });
     if (!users)
       return res.status(400).json({ message: "Could not fetch users" });
 
@@ -19,18 +22,18 @@ export const getAllUsers = async (
 };
 
 export const getAllMessages = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const { userId } = req.params;
-    const myID = req.auth().userId;
+    const { userId: receiverId } = req.params;
+    const { userId: senderId } = getAuth(req);
 
     const messages = await Message.find({
       $or: [
-        { senderID: myID, receiverID: userId },
-        { senderID: userId, receiverID: myID },
+        { senderID: senderId, receiverID: receiverId },
+        { senderID: receiverId, receiverID: senderId },
       ],
     }).sort({ createdAt: 1 });
 

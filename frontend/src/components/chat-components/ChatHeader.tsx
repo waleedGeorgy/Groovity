@@ -1,11 +1,16 @@
 import { X } from "lucide-react";
+import { useShallow } from "zustand/react/shallow";
 import { AvatarFallback } from "@radix-ui/react-avatar"
 import { useChatStore } from "@/stores/useChatStore"
 import { Avatar, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button";
 
 const ChatHeader = () => {
-    const { selectedUser, onlineUsers, setSelectedUser } = useChatStore();
+    const { selectedUser, onlineUsers, setSelectedUser } = useChatStore(useShallow(state => ({
+        selectedUser: state.selectedUser,
+        onlineUsers: state.onlineUsers,
+        setSelectedUser: state.setSelectedUser
+    })));
 
     if (!selectedUser) return;
 

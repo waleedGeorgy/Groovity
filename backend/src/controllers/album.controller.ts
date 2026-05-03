@@ -1,10 +1,11 @@
-import { Album } from "./../models/album.model.ts";
+import { type Request, type Response, type NextFunction } from "express";
+import { Album } from "../models/album.model.ts";
 
 export const getAllAlbums = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const albums = await Album.find().sort({ _id: -1 });
     if (!albums) return res.status(400).json({ message: "No albums to fetch" });
@@ -17,10 +18,10 @@ export const getAllAlbums = async (
 };
 
 export const getAlbumByID = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { albumID } = req.params;
     const album = await Album.findById(albumID).populate("songs");

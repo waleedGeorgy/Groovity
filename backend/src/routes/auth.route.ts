@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authCallback } from './../controllers/auth.controller.ts';
+import { authCallback } from "./../controllers/auth.controller.ts";
 
 const router = Router();
 

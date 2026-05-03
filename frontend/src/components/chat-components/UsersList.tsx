@@ -2,17 +2,24 @@ import { useChatStore } from "@/stores/useChatStore"
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UsersListSkeleton from "../skeletons/UsersListSkeleton";
+import { useShallow } from "zustand/react/shallow";
 
 const UsersList = () => {
-    const { users, selectedUser, setSelectedUser, isLoading, onlineUsers } = useChatStore();
+    const { users, selectedUser, setSelectedUser, isLoading, onlineUsers } = useChatStore(useShallow(state => ({
+        users: state.users,
+        selectedUser: state.selectedUser,
+        setSelectedUser: state.setSelectedUser,
+        isLoading: state.isLoading,
+        onlineUsers: state.onlineUsers
+    })));
 
     return (
         <div className="h-full">
             <ScrollArea className='h-[calc(100vh-159px)] bg-secondary'>
                 <div className='space-y-2'>
-                    {isLoading ? (
+                    {isLoading ?
                         <UsersListSkeleton />
-                    ) : (
+                        :
                         users.map((user) => (
                             <div
                                 key={user._id}
@@ -34,7 +41,7 @@ const UsersList = () => {
                                 </div>
                             </div>
                         ))
-                    )}
+                    }
                 </div>
             </ScrollArea>
         </div>

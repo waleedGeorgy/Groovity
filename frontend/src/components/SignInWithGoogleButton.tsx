@@ -16,7 +16,12 @@ const SignInWithGoogleButton = () => {
   }
 
   return (
-    <Button onClick={() => void signInWithGoogle()} variant="secondary" className="w-full cursor-pointer border" size="sm">
+    <Button
+      onClick={() => void signInWithGoogle()}
+      variant="secondary"
+      className="w-full cursor-pointer border"
+      size="sm"
+    >
       <img src={googleLogo} alt="Logo of google" className="size-4" /> Continue with Google
     </Button>
   )

@@ -111,7 +111,7 @@ export const useChatStore = create<chatStoreProps>((set, get) => ({
             newActivities.set(userId, activity);
             return { usersActivity: newActivities };
           });
-        }
+        },
       );
 
       set({ isUserConnected: true });
@@ -135,7 +135,7 @@ export const useChatStore = create<chatStoreProps>((set, get) => ({
     set({ isMessagesLoading: true, error: null });
     try {
       const response = await axiosInstance.get<Message[]>(
-        `/users/messages/${userId}`
+        `/users/messages/${userId}`,
       );
       set({ messages: response.data });
     } catch (error) {

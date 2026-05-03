@@ -19,16 +19,16 @@ const songSchema = new mongoose.Schema(
       required: true,
     },
     duration: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     albumID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Album",
-        required: false
-    }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Album",
+      required: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const Song = mongoose.model("Song", songSchema);

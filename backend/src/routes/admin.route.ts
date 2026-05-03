@@ -1,21 +1,21 @@
 import { Router } from "express";
+import { requireAuth, requireAdmin } from "../middleware/auth.middleware.ts";
 import {
   createAlbum,
   createSong,
   deleteAlbum,
   deleteSong,
   getAdminStatus,
+  getStats,
 } from "../controllers/admin.controller.ts";
-import { checkAdmin, protectRoute } from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
-router.use(protectRoute, checkAdmin);
-
-router.get("/check-admin", getAdminStatus);
-router.post("/songs", createSong);
-router.delete("/songs/:songID", deleteSong);
-router.post("/albums", createAlbum);
-router.delete("/albums/:albumID", deleteAlbum);
+router.get("/check-admin", requireAuth, getAdminStatus);
+router.post("/songs", requireAuth, requireAdmin, createSong);
+router.delete("/songs/:songID", requireAuth, requireAdmin, deleteSong);
+router.post("/albums", requireAuth, requireAdmin, createAlbum);
+router.delete("/albums/:albumID", requireAuth, requireAdmin, deleteAlbum);
+router.get("/stats", requireAuth, requireAdmin, getStats);
 
 export default router;

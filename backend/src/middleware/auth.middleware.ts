@@ -1,6 +1,11 @@
 import { clerkClient, getAuth } from "@clerk/express";
+import { type NextFunction, type Request, type Response } from "express";
 
-export const protectRoute = (req: any, res: any, next: any): void => {
+export const requireAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { userId } = getAuth(req);
     if (!userId) {
@@ -15,14 +20,14 @@ export const protectRoute = (req: any, res: any, next: any): void => {
   }
 };
 
-export const checkAdmin = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+export const requireAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { userId } = getAuth(req);
-    const user = await clerkClient.users.getUser(userId as string);
+    const user = await clerkClient.users.getUser(userId!);
 
     const isAdmin =
       user.primaryEmailAddress?.emailAddress === process.env.ADMIN_EMAIL;
@@ -31,7 +36,6 @@ export const checkAdmin = async (
         .status(403)
         .json({ message: "Unauthorized. Admin-only route." });
     }
-
     next();
   } catch (error) {
     console.log(error);
