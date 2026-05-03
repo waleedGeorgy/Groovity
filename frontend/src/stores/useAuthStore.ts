@@ -25,6 +25,7 @@ export const useAuthStore = create<authStoreProps>((set) => ({
       set({ isAdmin: res.data.admin });
     } catch (error) {
       set({ isAdmin: false });
+      
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
         set({ error: axiosError.response.data.message });

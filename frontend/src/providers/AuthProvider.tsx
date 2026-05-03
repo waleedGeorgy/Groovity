@@ -13,11 +13,13 @@ const addRequestHeader = (token: string | null) => {
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { getToken, isLoaded, isSignedIn, userId } = useAuth();
+
   const { checkAdmin } = useAuthStore(useShallow(state => ({ checkAdmin: state.checkAdmin })));
   const { connectSocket, disconnectSocket } = useChatStore(useShallow(state => ({
     connectSocket: state.connectSocket,
     disconnectSocket: state.disconnectSocket
   })));
+
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {

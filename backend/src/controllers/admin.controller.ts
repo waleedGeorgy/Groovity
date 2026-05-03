@@ -1,3 +1,4 @@
+import { clerkClient, getAuth } from "@clerk/express";
 import { type NextFunction, type Request, type Response } from "express";
 import { type UploadedFile } from "express-fileupload";
 import { Album } from "../models/album.model.ts";
@@ -164,13 +165,19 @@ export const deleteAlbum = async (
   }
 };
 
-export const getAdminStatus = (
+export const getAdminStatus = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    return res.status(200).json({ admin: true });
+    const { userId } = getAuth(req);
+
+    const user = await clerkClient.users.getUser(userId!);
+    const isAdmin =
+      user.primaryEmailAddress?.emailAddress === process.env.ADMIN_EMAIL;
+
+    return res.status(200).json({ admin: isAdmin });
   } catch (error) {
     console.log(error);
     next(error);
