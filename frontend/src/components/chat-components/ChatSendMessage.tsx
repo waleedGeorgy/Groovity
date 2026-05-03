@@ -4,13 +4,17 @@ import { Send } from "lucide-react";
 import { useChatStore } from "@/stores/useChatStore";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useShallow } from "zustand/react/shallow";
 
 const ChatSendMessage = () => {
     const [newMessage, setNewMessage] = useState("");
 
     const { user } = useUser();
 
-    const { selectedUser, sendMessage } = useChatStore();
+    const { selectedUser, sendMessage } = useChatStore(useShallow(state => ({
+        selectedUser: state.selectedUser,
+        sendMessage: state.sendMessage
+    })));
 
     const handleSendMessage = () => {
         if (!selectedUser || !user || !newMessage) return;
@@ -25,8 +29,8 @@ const ChatSendMessage = () => {
                     placeholder='Message'
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="border-none"
                     onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                    className="border-none"
                     autoFocus
                 />
                 <Button size="icon" className="bg-indigo-500 hover:bg-indigo-400 cursor-pointer transition-all duration-300 rounded-full" onClick={handleSendMessage} disabled={!newMessage.trim()}>

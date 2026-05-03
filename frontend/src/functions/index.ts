@@ -8,25 +8,19 @@ export const durationInMinutes = (songDuration: number) => {
 };
 
 export const createToast = (state: string, contents: string) => {
+  const toastStyling = {
+    style: {
+      borderRadius: "8px",
+      background: "#333",
+      color: "#fff",
+    },
+    duration: 4000,
+  };
   switch (state) {
     case "error":
-      return toast.error(contents, {
-        style: {
-          borderRadius: "8px",
-          background: "#333",
-          color: "#fff",
-        },
-        duration: 4000,
-      });
+      return toast.error(contents, toastStyling);
     case "success":
-      return toast.success(contents, {
-        style: {
-          borderRadius: "8px",
-          background: "#333",
-          color: "#fff",
-        },
-        duration: 4000,
-      });
+      return toast.success(contents, toastStyling);
     default:
       break;
   }

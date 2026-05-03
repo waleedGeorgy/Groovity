@@ -1,10 +1,18 @@
+import { type NextFunction, type Response, type Request } from "express";
 import { User } from "../models/user.model.ts";
 
+type AuthBody = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  imageUrl: string;
+};
+
 export const authCallback = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request<{}, {}, AuthBody>,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
@@ -19,9 +27,9 @@ export const authCallback = async (
       return res
         .status(200)
         .json({ success: true, message: "User authenticated successfully" });
+    } else {
+      return res.status(200).json({ success: true });
     }
-
-    return res.status(200).json({ success: true });
   } catch (error) {
     next(error);
   }

@@ -8,16 +8,27 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlbumHeaderSkeleton, AlbumTableSkeleton } from "@/components/skeletons/AlbumSkeleton";
 import { durationInMinutes } from "@/functions";
+import { useShallow } from "zustand/react/shallow";
 
 const AlbumPage = () => {
-    const { currentAlbum, isLoading, getAlbumByID } = useMusicStore();
-    const { isSongPlaying, currentSong, toggleSongPlay, playAlbum, stopSong } = usePlaybackStore();
+    const { currentAlbum, isLoading, getAlbumByID } = useMusicStore(useShallow(state => ({
+        currentAlbum: state.currentAlbum,
+        isLoading: state.isLoading,
+        getAlbumByID: state.getAlbumByID
+    })));
+    const { isSongPlaying, currentSong, toggleSongPlay, playAlbum, stopSong } = usePlaybackStore(useShallow(state => ({
+        isSongPlaying: state.isSongPlaying,
+        currentSong: state.currentSong,
+        toggleSongPlay: state.toggleSongPlay,
+        playAlbum: state.playAlbum,
+        stopSong: state.stopSong
+    })));
 
     const { albumID } = useParams();
 
-    const [backgroundColor, setBackgroundColor] = useState<string>("#1e1b4b");
+    const [backgroundColor, setBackgroundColor] = useState("#1e1b4b");
 
-    const getColorValue = (): string => {
+    const getColorValue = () => {
         const bgColor = ["indigo-900", "rose-900", "violet-900", "blue-900", "sky-900", "cyan-900", "teal-900", "emerald-900", "green-900", "lime-900", "yellow-900", "amber-900", "orange-900", "red-900", "purple-900"];
 
         const colorMap: Record<string, string> = {
@@ -131,15 +142,15 @@ const AlbumPage = () => {
                     </Button>
                 </div>
                 {isLoading ?
-                    (<AlbumTableSkeleton />)
+                    <AlbumTableSkeleton />
                     :
-                    (currentAlbum?.songs.length === 0 ?
-                        (<div className="h-full flex flex-col items-center justify-center gap-2 mt-8">
+                    currentAlbum?.songs.length === 0 ?
+                        <div className="h-full flex flex-col items-center justify-center gap-2 mt-8">
                             <h2 className="font-roboto text-3xl">This album is empty!</h2>
                             <p className="opacity-60 text-lg font-semibold">If authorized, please add songs to this album.</p>
-                        </div>)
+                        </div>
                         :
-                        (<Table>
+                        <Table>
                             <TableHeader>
                                 <TableRow className="font-roboto text-base p-4 opacity-60">
                                     <TableHead><span className="flex items-center gap-1"><Hash className="size-4 inline" /></span></TableHead>
@@ -175,11 +186,10 @@ const AlbumPage = () => {
                                     <TableCell className="text-right font-bold">{albumDuration()}</TableCell>
                                 </TableRow>
                             </TableFooter>
-                        </Table>)
-                    )
+                        </Table>
                 }
-            </ScrollArea >
-        </div >
+            </ScrollArea>
+        </div>
     )
 }
 

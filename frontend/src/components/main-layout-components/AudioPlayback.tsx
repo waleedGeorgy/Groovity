@@ -1,11 +1,16 @@
 import { useEffect, useRef } from "react";
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
+import { useShallow } from "zustand/react/shallow";
 
 const AudioPlayback = () => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const prevSongRef = useRef<string | null>(null);
 
-    const { currentSong, isSongPlaying, playNextSong } = usePlaybackStore();
+    const { currentSong, isSongPlaying, playNextSong } = usePlaybackStore(useShallow(state => ({
+        currentSong: state.currentSong,
+        isSongPlaying: state.isSongPlaying,
+        playNextSong: state.playNextSong
+    })));
 
     // Handle song play/pause
     useEffect(() => {

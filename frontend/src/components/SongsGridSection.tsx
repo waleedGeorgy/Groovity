@@ -4,6 +4,7 @@ import { durationInMinutes } from "@/functions";
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
 import SongsGridSkeleton from "./skeletons/SongsGridSkeleton";
 import { Button } from "./ui/button";
+import { useShallow } from "zustand/react/shallow";
 
 interface songsGridProps {
   songs: Song[],
@@ -14,7 +15,12 @@ interface songsGridProps {
 }
 
 const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps) => {
-  const { currentSong, isSongPlaying, setCurrentSong, toggleSongPlay } = usePlaybackStore();
+  const { currentSong, isSongPlaying, setCurrentSong, toggleSongPlay } = usePlaybackStore(useShallow(state => ({
+    currentSong: state.currentSong,
+    isSongPlaying: state.isSongPlaying,
+    setCurrentSong: state.setCurrentSong,
+    toggleSongPlay: state.toggleSongPlay
+  })));
 
   const handleSongPlay = (isCurrentSong: boolean, song: Song) => {
     if (isCurrentSong) toggleSongPlay();
@@ -28,8 +34,10 @@ const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps
     <div className="w-full p-4">
       <h2 className="text-3xl font-bold font-roboto mt-5 mb-3 ml-2 flex flex-row items-center gap-2">{icon}{title}</h2>
       <div className="grid grid-cols-[repeat(auto-fill,14rem)] gap-2 place-items-center">
-        {loading ? (<SongsGridSkeleton />) :
-          (songs.map((song) => {
+        {loading ?
+          <SongsGridSkeleton />
+          :
+          songs.map(song => {
             const isCurrentSong = song._id === currentSong?._id;
 
             return (
@@ -43,10 +51,15 @@ const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps
                   <h4 className="opacity-60 text-sm truncate">{song.artist}</h4>
                 </div>
                 <Button className={`absolute bottom-2 right-2 size-9 cursor-pointer bg-indigo-500 hover:bg-indigo-400 transition-all opacity-0 translate-x-6 hover:opacity-100 group-hover:translate-x-0 duration-500 ${isCurrentSong ? "opacity-100 translate-x-0 animate-pulse" : "opacity-0 group-hover:opacity-100"}`} size="icon">
-                  {isCurrentSong && isSongPlaying ? (<Pause className="size-4" />) : (<Play className="size-4" />)}
+                  {isCurrentSong && isSongPlaying ?
+                    <Pause className="size-4" />
+                    :
+                    <Play className="size-4" />
+                  }
                 </Button>
               </div>)
-          }))}
+          })
+        }
       </div>
     </div>
   )

@@ -124,7 +124,7 @@
   --font-roboto: "Roboto Condensed", sans-serif;
   --font-lato: "Lato", sans-serif;
 
-  --animate-wiggle: wiggle 2s ease-in-out infinite;
+  --animate-wiggle: wiggle 3s ease-in-out infinite;
   @keyframes wiggle {
     0%,
     100% {

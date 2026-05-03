@@ -1,4 +1,4 @@
-import express, { type NextFunction } from "express";
+import express, { type Request, type Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
@@ -14,7 +14,6 @@ import authRoutes from "./routes/auth.route.ts";
 import adminRoutes from "./routes/admin.route.ts";
 import songRoutes from "./routes/song.route.ts";
 import albumRoutes from "./routes/album.route.ts";
-import statsRoutes from "./routes/stats.route.ts";
 
 dotenv.config();
 
@@ -24,10 +23,9 @@ const __dirname = path.resolve();
 const app = express();
 
 const server = createServer(app);
-
 initializeSocket(server);
 
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "15mb" }));
 app.use(clerkMiddleware());
 app.use(
   fileUpload({
@@ -35,29 +33,32 @@ app.use(
     tempFileDir: path.join(__dirname, "tmp"),
     createParentPath: true,
     limits: {
-      fileSize: 10 * 1024 * 1024,
+      fileSize: 15 * 1024 * 1024,
     },
-  })
+    abortOnLimit: true,
+    safeFileNames: true,
+    preserveExtension: true,
+  }),
 );
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 const tempFilesFolder = path.join(process.cwd(), "tmp");
 
-cron.schedule("4 * * * *", () => {
+cron.schedule("2 * * * *", () => {
   if (fs.existsSync(tempFilesFolder)) {
     fs.readdir(tempFilesFolder, (err, files) => {
       if (err) {
         console.log(err);
-        return;
+        throw new Error(err.message);
       }
       for (const file of files) {
         fs.unlink(path.join(tempFilesFolder, file), (err) => {
-          console.log(err);
+          throw new Error(err?.message);
         });
       }
     });
@@ -69,9 +70,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
-app.use("/api/stats", statsRoutes);
 
-app.use((err: Error, req: any, res: any, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response) => {
   res.status(500).json({
     message:
       process.env.NODE_ENV === "production"
@@ -82,7 +82,7 @@ app.use((err: Error, req: any, res: any, next: NextFunction) => {
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get(/^(?!\/api).*/, (req, res) => {
+  app.get(/^(?!\/api).*/, (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
   });
 }

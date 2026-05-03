@@ -20,7 +20,7 @@ const TopBar = () => {
                     <Button asChild variant="outline" size="sm">
                         <Link viewTransition to="/admin" className="flex items-center justify-center gap-2">
                             <LayoutDashboard className="size-4" />
-                            <p>Admin Dashboard</p>
+                            <span>Admin Dashboard</span>
                         </Link>
                     </Button>
                 )}

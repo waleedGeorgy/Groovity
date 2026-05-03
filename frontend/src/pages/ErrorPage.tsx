@@ -21,7 +21,6 @@ export default function ErrorPage() {
         if (error instanceof Error) {
             return error.message;
         }
-
         return "An unknown error occurred";
     };
 

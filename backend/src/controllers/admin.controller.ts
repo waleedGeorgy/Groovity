@@ -1,34 +1,19 @@
-import { Album } from "./../models/album.model.ts";
-import { Song } from "./../models/song.model.ts";
-import cloudinary from "../lib/cloudinary.ts";
-
-interface UploadedFile {
-  tempFilePath: string;
-  name: string;
-  mimetype: string;
-  data: Buffer;
-  size: number;
-  md5: string;
-}
-
-const cloudinaryUploader = async (file: UploadedFile): Promise<string> => {
-  try {
-    const result = await cloudinary.uploader.upload(file.tempFilePath, {
-      resource_type: "auto",
-      folder: "groovity",
-    });
-    return result.secure_url;
-  } catch (error) {
-    console.log(error);
-    throw new Error("Error uploading file to Cloudinary.");
-  }
-};
+import { type NextFunction, type Request, type Response } from "express";
+import { type UploadedFile } from "express-fileupload";
+import { Album } from "../models/album.model.ts";
+import { Song } from "../models/song.model.ts";
+import { User } from "../models/user.model.ts";
+import { cloudinaryUploader } from "../lib/cloudinary.ts";
 
 export const createSong = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request<
+    {},
+    {},
+    { title: string; artist: string; duration: number; albumID: string }
+  >,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     if (!req.files || !req.files.imageFile) {
       return res.status(400).json({ message: "Please provide an image." });
@@ -55,8 +40,8 @@ export const createSong = async (
     }
 
     const [imageURL, audioURL] = await Promise.all([
-      cloudinaryUploader(imageFile),
-      cloudinaryUploader(audioFile),
+      cloudinaryUploader(imageFile as UploadedFile),
+      cloudinaryUploader(audioFile as UploadedFile),
     ]);
 
     const song = new Song({
@@ -83,10 +68,10 @@ export const createSong = async (
 };
 
 export const deleteSong = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { songID } = req.params;
     if (!songID) return res.status(400).json({ message: "Invalid song ID" });
@@ -110,10 +95,10 @@ export const deleteSong = async (
 };
 
 export const createAlbum = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request<{}, {}, { title: string; artist: string; releaseYear: number }>,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     if (!req.files || !req.files.imageFile) {
       return res.status(400).json({ message: "Please add an album image." });
@@ -138,7 +123,7 @@ export const createAlbum = async (
         .json({ message: "Please provide a valid album year." });
     }
 
-    const imageURL = await cloudinaryUploader(imageFile);
+    const imageURL = await cloudinaryUploader(imageFile as UploadedFile);
 
     const album = Album.create({
       title,
@@ -157,10 +142,10 @@ export const createAlbum = async (
 };
 
 export const deleteAlbum = async (
-  req: any,
-  res: any,
-  next: any
-): Promise<void> => {
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { albumID } = req.params;
     if (!albumID) return res.status(400).json({ message: "Invalid album ID" });
@@ -169,7 +154,7 @@ export const deleteAlbum = async (
     if (!album)
       return res.status(400).json({ message: "Album does not exist" });
 
-    Song.deleteMany({ albumID: albumID });
+    await Song.deleteMany({ albumID: albumID });
 
     await Album.findByIdAndDelete(albumID);
     return res.status(200).json({ message: "Album deleted successfully" });
@@ -179,9 +164,54 @@ export const deleteAlbum = async (
   }
 };
 
-export const getAdminStatus = (req: any, res: any, next: any): void => {
+export const getAdminStatus = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     return res.status(200).json({ admin: true });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getStats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const [totalSongs, totalAlbums, totalUsers, uniqueArtists] =
+      await Promise.all([
+        Song.countDocuments(),
+        Album.countDocuments(),
+        User.countDocuments(),
+        Song.aggregate([
+          {
+            $unionWith: {
+              coll: "albums",
+              pipeline: [],
+            },
+          },
+          {
+            $group: {
+              _id: "$artist",
+            },
+          },
+          {
+            $count: "count",
+          },
+        ]),
+      ]);
+
+    return res.status(200).json({
+      totalSongs,
+      totalUsers,
+      totalAlbums,
+      totalArtists: uniqueArtists[0]?.count || 0,
+    });
   } catch (error) {
     console.log(error);
     next(error);

@@ -45,8 +45,8 @@ function App() {
 
   return (
     <main className="font-lato">
-      <Toaster position="bottom-right" reverseOrder={true} />
       <RouterProvider router={router} />
+      <Toaster position="bottom-right" reverseOrder={true} />
     </main>
   );
 }

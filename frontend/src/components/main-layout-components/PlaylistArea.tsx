@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
+import { useShallow } from "zustand/react/shallow";
 import { Library } from "lucide-react"
 import { useUser } from "@clerk/clerk-react";
 import { useMusicStore } from "@/stores/useMusicStore";
@@ -8,7 +9,11 @@ import PlaylistSkeleton from "../skeletons/PlaylistSkeleton";
 
 const PlaylistArea = () => {
     const { user } = useUser();
-    const { albums, getAllAlbums, isLoading } = useMusicStore();
+    const { albums, getAllAlbums, isLoading } = useMusicStore(useShallow(state => ({
+        albums: state.albums,
+        getAllAlbums: state.getAllAlbums,
+        isLoading: state.isLoading
+    })));
 
     useEffect(() => {
         void getAllAlbums();
@@ -20,20 +25,17 @@ const PlaylistArea = () => {
             <ScrollArea className={user ? `h-[calc(100vh-256px)]` : `h-[calc(100vh-220px)]`}>
                 <div className="space-y-1">
                     {isLoading ?
-                        (
-                            <PlaylistSkeleton />
-                        ) :
-                        (
-                            albums.map((album) => (
-                                <Link viewTransition to={`/albums/${album._id}`} key={album._id} className="flex flex-row items-center gap-3 hover:bg-indigo-900 rounded-md p-2 cursor-pointer transition-colors duration-300">
-                                    <img src={album.imageURL} alt={album.title} className="size-12 rounded-md object-cover shrink-0" />
-                                    <div className="w-full min-w-0 hidden md:block">
-                                        <h2 className="truncate font-roboto">{album.title}</h2>
-                                        <p className="text-sm font-light truncate opacity-60">{album.artist}</p>
-                                    </div>
-                                </Link>
-                            ))
-                        )
+                        <PlaylistSkeleton />
+                        :
+                        albums.map((album) => (
+                            <Link viewTransition to={`/albums/${album._id}`} key={album._id} className="flex flex-row items-center gap-3 hover:bg-indigo-900 rounded-md p-2 cursor-pointer transition-colors duration-300">
+                                <img src={album.imageURL} alt={album.title} className="size-12 rounded-md object-cover shrink-0" />
+                                <div className="w-full min-w-0 hidden md:block">
+                                    <h2 className="truncate font-roboto">{album.title}</h2>
+                                    <p className="text-sm font-light truncate opacity-60">{album.artist}</p>
+                                </div>
+                            </Link>
+                        ))
                     }
                 </div>
             </ScrollArea>
