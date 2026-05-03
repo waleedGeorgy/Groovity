@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@clerk/clerk-react"
 import { useShallow } from "zustand/react/shallow";
-import { Loader2 } from "lucide-react";
+import logo from "@/assets/icon.png";
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useChatStore } from "@/stores/useChatStore";
@@ -55,7 +55,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   if (!isLoaded || isCheckingAuth) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <Loader2 className="size-16 text-indigo-500 animate-spin" />
+        <div className="relative">
+          <div
+            className='absolute -inset-6 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin -z-10'
+            aria-hidden="true"
+          />
+          <img src={logo} alt="Logo of Groovity" className="size-24" />
+        </div>
       </div>
     )
   }

@@ -41,7 +41,8 @@ const ChatPage = () => {
                         <div className="relative">
                             <div
                                 className='absolute -inset-1.5 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin'
-                                aria-hidden="true" />
+                                aria-hidden="true"
+                            />
                             <img src={logo} alt="Logo of Groovity" className="size-14 animate-wiggle" />
                         </div>
                         <div className="text-center">

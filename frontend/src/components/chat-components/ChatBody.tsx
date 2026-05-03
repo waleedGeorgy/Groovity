@@ -52,9 +52,7 @@ const ChatBody = () => {
                                     {message.senderID === user?.id ? user?.fullName?.[0] : selectedUser?.name[0]}
                                 </AvatarFallback>
                             </Avatar>
-                            <div
-                                className={`rounded-md py-2 px-3 max-w-[66%] ${message.senderID === user?.id ? "bg-indigo-950" : "bg-secondary"}`}
-                            >
+                            <div className={`rounded-md py-2 px-3 max-w-[66%] ${message.senderID === user?.id ? "bg-indigo-950" : "bg-secondary"}`}>
                                 <p>{message.contents}</p>
                                 <small className='text-xs opacity-60 font-roboto font-light'>
                                     {formatTime(message.createdAt)}

@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "frontend-dev": "cd frontend && pnpm dev",
+    "backend-dev": "cd backend && pnpm dev",
     "build": "cd backend && pnpm install && cd .. && cd frontend && pnpm install && pnpm run build",
     "start": "cd backend && pnpm run start"
   },
