@@ -1,6 +1,6 @@
 import { useSignIn } from "@clerk/clerk-react"
 import { Button } from "./ui/button";
-import googleLogo from "@/assets/google-icon.png";
+import googleLogo from "../../public/google-icon.png";
 
 const SignInWithGoogleButton = () => {
   const { signIn, isLoaded } = useSignIn();
