@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from "express";
+import { getAuth } from "@clerk/express";
 import { Message } from "../models/message.model.ts";
 import { User } from "../models/user.model.ts";
-import { getAuth } from "@clerk/express";
 
 export const getAllUsers = async (
   req: Request,

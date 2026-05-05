@@ -10,7 +10,7 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 
 const AddAlbumButton = () => {
-    const [isFormSubmitting, setIsFormSubmitting] = useState<boolean>(false);
+    const [isFormSubmitting, setIsFormSubmitting] = useState(false);
     const [newAlbum, setNewAlbum] = useState<{ title: string; artist: string; releaseYear: number }>({
         title: "",
         artist: "",
@@ -18,7 +18,6 @@ const AddAlbumButton = () => {
     });
 
     const [newAlbumImage, setNewAlbumImage] = useState<File | null>(null);
-
 
     const handleAddNewAlbum = async () => {
         setIsFormSubmitting(true);
@@ -63,7 +62,7 @@ const AddAlbumButton = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button size="sm" className="cursor-pointer bg-emerald-500 hover:bg-emerald-400">
-                    <PlusCircle /><span>Create Album</span>
+                    <PlusCircle />Create Album
                 </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[90%]">
@@ -72,7 +71,7 @@ const AddAlbumButton = () => {
                 </DialogHeader>
                 <div className="space-y-5">
                     <div className="space-y-2">
-                        <Label htmlFor="image" className="opacity-60">Image File*</Label>
+                        <Label htmlFor="image" className="opacity-60">Album Cover*</Label>
                         <Input type="file" className="cursor-pointer" id="image" accept=".png, .jpg, .jpeg .webp" onChange={(e) => setNewAlbumImage(e.target.files![0])} />
                     </div>
                     <div className="space-y-2">
@@ -92,12 +91,21 @@ const AddAlbumButton = () => {
                     <DialogClose asChild>
                         <Button variant="outline" disabled={isFormSubmitting} className="cursor-pointer">Cancel</Button>
                     </DialogClose>
-                    <Button onClick={() => void handleAddNewAlbum()} disabled={isFormSubmitting} variant="secondary" className="bg-indigo-500 hover:bg-indigo-600 transition-all duration-300 cursor-pointer">
-                        {isFormSubmitting ? (<span className="flex flex-row items-center justify-center gap-2"><Loader className="animate-spin" />Adding</span>) : (<span>Create</span>)}
+                    <Button
+                        onClick={() => void handleAddNewAlbum()}
+                        disabled={isFormSubmitting}
+                        variant="secondary"
+                        className="bg-indigo-500 hover:bg-indigo-600 transition-all duration-300 cursor-pointer"
+                    >
+                        {isFormSubmitting ?
+                            <span className="flex flex-row items-center justify-center gap-2"><Loader className="animate-spin" />Creating</span>
+                            :
+                            <span>Create</span>
+                        }
                     </Button>
                 </DialogFooter>
             </DialogContent>
-        </Dialog >
+        </Dialog>
     )
 }
 

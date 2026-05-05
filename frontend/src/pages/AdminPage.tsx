@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { redirect } from "react-router";
 import { useShallow } from "zustand/react/shallow";
 import AdminDashboard from "@/components/admin-components/AdminDashboard";
 import AdminHeader from "@/components/admin-components/AdminHeader";
@@ -21,10 +22,10 @@ const AdminPage = () => {
         void getAllStats();
     }, [getAllSongs, getAllAlbums, getAllStats]);
 
-    if (!isAdmin) throw new Error('Unauthorized. Admin-only.');
+    if (!isAdmin) redirect("/");
 
     return (
-        <div className="min-h-screen py-6 px-6 sm:px-12 space-y-8">
+        <div className="min-h-screen p-6 sm:px-12 space-y-8">
             <AdminHeader />
             <AdminDashboard />
             <AdminMusicControls />

@@ -26,7 +26,6 @@ const AuthCallbackPage = () => {
                 void navigate("/");
             }
         }
-
         void signupUser();
     }, [isLoaded, navigate, user]);
 

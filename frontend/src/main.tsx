@@ -12,7 +12,7 @@ if (!PUBLISHABLE_KEY) throw new Error('Valid Clerk publishable key not found')
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} appearance={{ theme: [shadcn] }}>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} appearance={{ theme: shadcn }}>
       <AuthProvider>
         <App />
       </AuthProvider>

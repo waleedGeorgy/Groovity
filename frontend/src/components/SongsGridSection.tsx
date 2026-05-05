@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Pause, Play } from "lucide-react";
 import type { Song } from "@/types";
 import { durationInMinutes } from "@/functions";
@@ -11,7 +12,7 @@ interface songsGridProps {
   title: string,
   loading: boolean,
   error: string | null,
-  icon: React.ReactNode,
+  icon: ReactNode,
 }
 
 const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps) => {
@@ -28,7 +29,7 @@ const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps
   }
 
   // todo: Fix error fallback
-  if (error) return <h1>{error}</h1>
+  if (error) return <h2>{error}</h2>
 
   return (
     <div className="w-full p-4">
@@ -43,8 +44,14 @@ const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps
             return (
               <div key={song._id} className="flex flex-col gap-3 rounded-md bg-background/75 transition-all duration-300 cursor-pointer p-3 group relative" onClick={() => handleSongPlay(isCurrentSong, song)}>
                 <div className="relative overflow-hidden aspect-square">
-                  <img src={song.imageURL} alt={song.title} className="size-48 rounded shrink-0 group-hover:scale-105 transition-all duration-500 object-cover" />
-                  <small className="absolute top-0 text-xs bg-secondary/85 py-1 px-2 rounded-sm mt-1 ml-1">{durationInMinutes(song.duration)}</small>
+                  <img
+                    src={song.imageURL}
+                    alt={song.title}
+                    className="size-48 rounded shrink-0 group-hover:scale-105 transition-all duration-500 object-cover"
+                  />
+                  <small className="absolute top-0 text-xs bg-secondary/85 py-1 px-2 rounded-sm mt-1 ml-1">
+                    {durationInMinutes(song.duration)}
+                  </small>
                 </div>
                 <div className="pb-1">
                   <h3 className="font-semibold truncate font-roboto">{song.title}</h3>
@@ -52,12 +59,11 @@ const SongsGridSection = ({ songs, title, icon, loading, error }: songsGridProps
                 </div>
                 <Button className={`absolute bottom-2 right-2 size-9 cursor-pointer bg-indigo-500 hover:bg-indigo-400 transition-all opacity-0 translate-x-6 hover:opacity-100 group-hover:translate-x-0 duration-500 ${isCurrentSong ? "opacity-100 translate-x-0 animate-pulse" : "opacity-0 group-hover:opacity-100"}`} size="icon">
                   {isCurrentSong && isSongPlaying ?
-                    <Pause className="size-4" />
-                    :
-                    <Play className="size-4" />
+                    <Pause className="size-4" /> : <Play className="size-4" />
                   }
                 </Button>
-              </div>)
+              </div>
+            )
           })
         }
       </div>

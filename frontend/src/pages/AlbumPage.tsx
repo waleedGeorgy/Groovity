@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useShallow } from "zustand/react/shallow";
 import { UserStar, Disc3, Calendar1, Play, Clock4, FilePlus, Hash, Music, Pause } from "lucide-react"
 import { useMusicStore } from "@/stores/useMusicStore"
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlbumHeaderSkeleton, AlbumTableSkeleton } from "@/components/skeletons/AlbumSkeleton";
 import { durationInMinutes } from "@/functions";
-import { useShallow } from "zustand/react/shallow";
 
 const AlbumPage = () => {
     const { currentAlbum, isLoading, getAlbumByID } = useMusicStore(useShallow(state => ({
@@ -56,7 +56,7 @@ const AlbumPage = () => {
 
     const albumDuration = () => {
         let totalDuration = 0;
-        currentAlbum?.songs.map((song) => {
+        currentAlbum?.songs.map(song => {
             totalDuration += song.duration;
         });
 
@@ -70,12 +70,10 @@ const AlbumPage = () => {
 
         if (currentSong?._id === currentAlbum.songs[index]._id) {
             toggleSongPlay();
-        }
-        else if (currentSong && isSongPlaying) {
+        } else if (currentSong && isSongPlaying) {
             stopSong();
             setTimeout(() => playAlbum(currentAlbum.songs, index), 100);
-        }
-        else {
+        } else {
             playAlbum(currentAlbum.songs, index);
         }
     }
@@ -83,7 +81,8 @@ const AlbumPage = () => {
     const handleAlbumPlay = () => {
         if (!currentAlbum) return;
 
-        const isCurrentAlbumPlaying = currentAlbum?.songs.some((song) => song._id === currentSong?._id);
+        const isCurrentAlbumPlaying = currentAlbum?.songs.some(song => song._id === currentSong?._id);
+
         if (isCurrentAlbumPlaying) toggleSongPlay();
         else {
             if (currentSong && isSongPlaying) {
@@ -113,7 +112,7 @@ const AlbumPage = () => {
                     }}
                 >
                     {!isLoading ?
-                        (<>
+                        <>
                             <img className="size-60 rounded border object-cover" src={currentAlbum?.imageURL} alt={currentAlbum?.title} />
                             <div className="flex flex-col justify-center gap-1">
                                 <h3 className="flex items-center gap-1 truncate text-xl"><UserStar className="size-5" />{currentAlbum?.artist}</h3>
@@ -125,9 +124,9 @@ const AlbumPage = () => {
                                     <span className="flex items-center gap-1 opacity-60 truncate"><FilePlus className="size-4" />{new Date(currentAlbum?.createdAt.split("T")[0] ?? new Date()).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
                                 </div>
                             </div>
-                        </>)
+                        </>
                         :
-                        (<AlbumHeaderSkeleton />)
+                        <AlbumHeaderSkeleton />
                     }
                 </div>
                 <div className="mb-4 ml-6">
@@ -138,7 +137,8 @@ const AlbumPage = () => {
                         disabled={isLoading || currentAlbum?.songs.length === 0}
                     >
                         {isSongPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ?
-                            (<Pause className="size-4" />) : (<Play className='size-4' />)}
+                            <Pause className="size-4" /> : <Play className='size-4' />
+                        }
                     </Button>
                 </div>
                 {isLoading ?
@@ -163,12 +163,20 @@ const AlbumPage = () => {
                                 {currentAlbum?.songs.map((song, id) => {
                                     const isCurrentSong = song._id === currentSong?._id;
                                     return (
-                                        <TableRow key={song._id} className={`cursor-pointer group ${isCurrentSong && "bg-gradient-to-r from-background  to-indigo-900"}`} onClick={() => handleSongPlay(id)}>
+                                        <TableRow
+                                            key={song._id}
+                                            className={`cursor-pointer group ${isCurrentSong && "bg-gradient-to-r from-background  to-indigo-900"}`}
+                                            onClick={() => handleSongPlay(id)}
+                                        >
                                             <TableCell className="w-14">
-                                                {isCurrentSong && isSongPlaying && (<Music className="size-4 text-indigo-500 animate-bounce" />)
+                                                {isCurrentSong && isSongPlaying && <Music className="size-4 text-indigo-500 animate-bounce" />}
+                                                {isCurrentSong && !isSongPlaying && <Pause className="size-4 text-emerald-500" />}
+                                                {!isCurrentSong &&
+                                                    <>
+                                                        <Play className="hidden group-hover:inline-block size-4 text-emerald-500" />
+                                                        <span className="group-hover:hidden">{id + 1}</span>
+                                                    </>
                                                 }
-                                                {isCurrentSong && !isSongPlaying && (<Pause className="size-4 text-emerald-500" />)}
-                                                {!isCurrentSong && (<><Play className="hidden group-hover:inline-block size-4 text-emerald-500" /><span className="group-hover:hidden">{id + 1}</span></>)}
                                             </TableCell>
                                             <TableCell className="flex flex-row items-center gap-3">
                                                 <img src={song.imageURL} alt={song.title} className="size-11 rounded object-cover" />

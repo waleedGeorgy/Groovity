@@ -44,7 +44,7 @@ function App() {
   ]);
 
   return (
-    <main className="font-lato">
+    <main className="font-lato antialiased">
       <RouterProvider router={router} />
       <Toaster position="bottom-right" reverseOrder={true} />
     </main>

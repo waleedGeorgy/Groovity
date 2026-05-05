@@ -1,5 +1,5 @@
-import { clerkClient, getAuth } from "@clerk/express";
 import { type NextFunction, type Request, type Response } from "express";
+import { clerkClient, getAuth } from "@clerk/express";
 import { type UploadedFile } from "express-fileupload";
 import { Album } from "../models/album.model.ts";
 import { Song } from "../models/song.model.ts";
@@ -16,29 +16,27 @@ export const createSong = async (
   next: NextFunction,
 ) => {
   try {
-    if (!req.files || !req.files.imageFile) {
+    if (!req.files || !req.files.imageFile)
       return res.status(400).json({ message: "Please provide an image." });
-    }
-    if (!req.files || !req.files.audioFile) {
+
+    if (!req.files || !req.files.audioFile)
       return res.status(400).json({ message: "Please provide an audio file." });
-    }
 
     const audioFile = req.files.audioFile;
     const imageFile = req.files.imageFile;
 
     const { title, artist, duration, albumID } = req.body;
 
-    if (!title || title.trim().length === 0) {
+    if (!title || title.trim().length === 0)
       return res.status(400).json({ message: "Please provide a song title." });
-    }
-    if (!artist || artist.trim().length === 0) {
+
+    if (!artist || artist.trim().length === 0)
       return res.status(400).json({ message: "Please provide a song artist." });
-    }
-    if (!duration || duration === 0) {
+
+    if (!duration || duration === 0)
       return res
         .status(400)
         .json({ message: "Please provide a valid song duration." });
-    }
 
     const [imageURL, audioURL] = await Promise.all([
       cloudinaryUploader(imageFile as UploadedFile),
@@ -61,6 +59,7 @@ export const createSong = async (
         $push: { songs: song._id },
       });
     }
+
     res.status(201).json(song);
   } catch (error) {
     console.log(error);
@@ -101,28 +100,27 @@ export const createAlbum = async (
   next: NextFunction,
 ) => {
   try {
-    if (!req.files || !req.files.imageFile) {
+    if (!req.files || !req.files.imageFile)
       return res.status(400).json({ message: "Please add an album image." });
-    }
+
     const imageFile = req.files.imageFile;
 
     const { title, artist, releaseYear } = req.body;
 
-    if (!title || title.trim().length === 0) {
+    if (!title || title.trim().length === 0)
       return res
         .status(400)
         .json({ message: "Please provide an album title." });
-    }
-    if (!artist || artist.trim().length === 0) {
+
+    if (!artist || artist.trim().length === 0)
       return res
         .status(400)
         .json({ message: "Please provide an album artist." });
-    }
-    if (!releaseYear || releaseYear === 0) {
+
+    if (!releaseYear || releaseYear === 0)
       return res
         .status(400)
         .json({ message: "Please provide a valid album year." });
-    }
 
     const imageURL = await cloudinaryUploader(imageFile as UploadedFile);
 
@@ -158,6 +156,7 @@ export const deleteAlbum = async (
     await Song.deleteMany({ albumID: albumID });
 
     await Album.findByIdAndDelete(albumID);
+
     return res.status(200).json({ message: "Album deleted successfully" });
   } catch (error) {
     console.log(error);
