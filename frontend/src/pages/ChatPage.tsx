@@ -4,7 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useChatStore } from "@/stores/useChatStore"
 import TopBar from "@/components/TopBar";
 import UsersList from "@/components/chat-components/UsersList";
-import logo from "../../public/icon.png";
+import logo from "@/assets/icon.png";
 import ChatHeader from "@/components/chat-components/ChatHeader";
 import ChatBody from "@/components/chat-components/ChatBody";
 import ChatSendMessage from "@/components/chat-components/ChatSendMessage";
