@@ -5,7 +5,7 @@ import { LayoutDashboard } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SignInWithGoogleButton from "./SignInWithGoogleButton";
 import { Button } from "./ui/button";
-import logo from "../../public/icon.png";
+import logo from "@/assets/icon.png";
 
 const TopBar = () => {
     const { isAdmin } = useAuthStore(useShallow(state => ({ isAdmin: state.isAdmin })));

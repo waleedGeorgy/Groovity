@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@clerk/clerk-react"
 import { useShallow } from "zustand/react/shallow";
-import logo from "../../public/icon.png";
+import logo from "@/assets/icon.png";
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useChatStore } from "@/stores/useChatStore";
