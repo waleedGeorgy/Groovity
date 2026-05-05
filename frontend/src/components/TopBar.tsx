@@ -1,13 +1,14 @@
 import { Link } from "react-router";
+import { useShallow } from "zustand/react/shallow";
 import { SignedOut, UserButton } from "@clerk/clerk-react";
 import { LayoutDashboard } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SignInWithGoogleButton from "./SignInWithGoogleButton";
 import { Button } from "./ui/button";
-import logo from "@/assets/icon.png";
+import logo from "../../public/icon.png";
 
 const TopBar = () => {
-    const { isAdmin } = useAuthStore();
+    const { isAdmin } = useAuthStore(useShallow(state => ({ isAdmin: state.isAdmin })));
 
     return (
         <nav className="flex flex-row flex-wrap gap-3 items-center justify-between sticky top-0 backdrop-blur-lg z-10 bg-card py-3 px-4 rounded-t-lg">

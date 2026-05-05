@@ -28,7 +28,7 @@ interface MusicStoreProps {
   deleteAlbum: (albumId: string) => Promise<void>;
 }
 
-export const useMusicStore = create<MusicStoreProps>()((set) => ({
+export const useMusicStore = create<MusicStoreProps>((set) => ({
   songs: [],
   isSongsLoading: false,
   featuredSongs: [],

@@ -8,11 +8,12 @@ export const requireAuth = (
 ) => {
   try {
     const { userId } = getAuth(req);
-    if (!userId) {
+
+    if (!userId)
       return res
         .status(401)
         .json({ message: "Unauthorized. You must be logged in." });
-    }
+
     next();
   } catch (error) {
     console.log(error);
@@ -31,11 +32,12 @@ export const requireAdmin = async (
 
     const isAdmin =
       user.primaryEmailAddress?.emailAddress === process.env.ADMIN_EMAIL;
-    if (!isAdmin) {
+
+    if (!isAdmin)
       return res
         .status(403)
         .json({ message: "Unauthorized. Admin-only route." });
-    }
+
     next();
   } catch (error) {
     console.log(error);

@@ -15,12 +15,12 @@ const MainLayout = () => {
                     <ResizablePanel defaultSize={15} minSize={0} maxSize={20} collapsedSize={0}>
                         <UsersPanel />
                     </ResizablePanel>
-                    <ResizableHandle withHandle className="bg-background px-1" />
-                    <ResizablePanel defaultSize={70}>
+                    <ResizableHandle withHandle className="bg-background hover:bg-indigo-700 mx-0.5 px-0.5 rounded-lg transition duration-100" />
+                    <ResizablePanel defaultSize={65}>
                         <Outlet />
                     </ResizablePanel>
-                    <ResizableHandle withHandle className="bg-background px-1" />
-                    <ResizablePanel defaultSize={15} minSize={0} maxSize={20}>
+                    <ResizableHandle withHandle className="bg-background hover:bg-indigo-700 mx-0.5 px-0.5 rounded-lg transition duration-100" />
+                    <ResizablePanel defaultSize={20} minSize={0} maxSize={25}>
                         <RightNavbar />
                         <PlaylistArea />
                     </ResizablePanel>

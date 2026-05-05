@@ -7,9 +7,9 @@ interface playbackStoreProps {
   currentSongIndex: number;
   isSongPlaying: boolean;
   songsQueue: Song[];
-  setCurrentSong: (song: Song | null) => void;
   initializeSongsQueue: (songs: Song[]) => void;
   playAlbum: (songs: Song[], startIndex: number) => void;
+  setCurrentSong: (song: Song | null) => void;
   toggleSongPlay: () => void;
   playNextSong: () => void;
   playPrevSong: () => void;
@@ -22,8 +22,8 @@ interface SocketAuth {
 
 export const usePlaybackStore = create<playbackStoreProps>((set, get) => ({
   currentSong: null,
-  isSongPlaying: false,
   currentSongIndex: -1,
+  isSongPlaying: false,
   songsQueue: [],
 
   initializeSongsQueue: (songs: Song[]) => {
@@ -38,7 +38,7 @@ export const usePlaybackStore = create<playbackStoreProps>((set, get) => ({
   playAlbum: (songs: Song[], startIndex = 0) => {
     if (songs.length <= 0) return;
 
-    const song = songs[startIndex];
+    const startingSong = songs[startIndex];
 
     const socket = useChatStore.getState().socket;
     const auth = socket?.auth as SocketAuth | undefined;
@@ -46,12 +46,12 @@ export const usePlaybackStore = create<playbackStoreProps>((set, get) => ({
     if (socket?.auth) {
       socket.emit("update_activity", {
         userId: auth?.userId,
-        activity: `Playing ${song.title} by ${song.artist}`,
+        activity: `Playing ${startingSong.title} by ${startingSong.artist}`,
       });
     }
 
     set({
-      currentSong: song,
+      currentSong: startingSong,
       isSongPlaying: true,
       currentSongIndex: startIndex,
       songsQueue: songs,

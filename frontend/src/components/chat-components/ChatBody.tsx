@@ -41,8 +41,7 @@ const ChatBody = () => {
                     messages.map((message) => (
                         <div
                             key={message._id}
-                            className={`flex items-start gap-3 ${message.senderID === user?.id ? "flex-row-reverse" : ""
-                                }`}
+                            className={`flex items-start gap-3 ${message.senderID === user?.id && "flex-row-reverse"}`}
                         >
                             <Avatar className='size-7'>
                                 <AvatarImage

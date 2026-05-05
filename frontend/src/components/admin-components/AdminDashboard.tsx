@@ -1,10 +1,14 @@
+import { useShallow } from "zustand/react/shallow";
 import { Library, ListMusic, Users, UserStar } from "lucide-react";
 import { useMusicStore } from "@/stores/useMusicStore"
 import StatsCard from "./StatsCard";
 import StatsCardsSkeleton from "../skeletons/StatsCardsSkeleton";
 
 const AdminDashboard = () => {
-  const { stats, isStatsLoading } = useMusicStore();
+  const { stats, isStatsLoading } = useMusicStore(useShallow(state => ({
+    stats: state.stats,
+    isStatsLoading: state.isStatsLoading
+  })));
 
   const statsItems = [
     {

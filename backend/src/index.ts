@@ -1,4 +1,8 @@
-import express, { type NextFunction, type Request, type Response } from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
@@ -82,6 +86,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
   app.get(/^(?!\/api).*/, (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
   });

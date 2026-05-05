@@ -1,6 +1,6 @@
 import { useSignIn } from "@clerk/clerk-react"
 import { Button } from "./ui/button";
-import googleLogo from "@/assets/google-icon.png";
+import googleLogo from "../../public/google-icon.png";
 
 const SignInWithGoogleButton = () => {
   const { signIn, isLoaded } = useSignIn();
@@ -21,8 +21,9 @@ const SignInWithGoogleButton = () => {
       variant="secondary"
       className="w-full cursor-pointer border"
       size="sm"
+      disabled={!isLoaded}
     >
-      <img src={googleLogo} alt="Logo of google" className="size-4" /> Continue with Google
+      <img src={googleLogo} alt="Logo of google" className="size-4" />Continue with Google
     </Button>
   )
 }
