@@ -101,6 +101,7 @@ export const usePlaybackStore = create<playbackStoreProps>((set, get) => ({
   playNextSong: () => {
     const { currentSongIndex, songsQueue } = get();
     const nextSongIndex = currentSongIndex + 1;
+    
     if (nextSongIndex < songsQueue.length) {
       const nextSong = songsQueue[nextSongIndex];
 

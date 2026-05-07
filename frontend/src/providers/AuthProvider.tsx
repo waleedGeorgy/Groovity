@@ -56,10 +56,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="relative">
-          <div
-            className='absolute -inset-6 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin -z-10'
-            aria-hidden="true"
-          />
+          <div className='absolute -inset-6 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin -z-10' />
           <img src={logo} alt="Logo of Groovity" className="size-24" />
         </div>
       </div>

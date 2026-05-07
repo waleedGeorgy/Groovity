@@ -20,14 +20,18 @@ function App() {
           element: <HomePage />
         },
         {
-          path: "/chat",
-          element: <ChatPage />
-        },
-        {
           path: "/albums/:albumID",
           element: <AlbumPage />
         },
+        {
+          path: "/chat",
+          element: <ChatPage />
+        }
       ]
+    },
+    {
+      path: "/admin",
+      element: <AdminPage />
     },
     {
       path: "/sso-callback",
@@ -36,11 +40,7 @@ function App() {
     {
       path: "/auth-callback",
       element: <AuthCallbackPage />
-    },
-    {
-      path: "/admin",
-      element: <AdminPage />
-    },
+    }
   ]);
 
   return (

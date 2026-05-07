@@ -16,6 +16,7 @@ const AlbumPage = () => {
         isLoading: state.isLoading,
         getAlbumByID: state.getAlbumByID
     })));
+    
     const { isSongPlaying, currentSong, toggleSongPlay, playAlbum, stopSong } = usePlaybackStore(useShallow(state => ({
         isSongPlaying: state.isSongPlaying,
         currentSong: state.currentSong,

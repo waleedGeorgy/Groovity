@@ -8,6 +8,8 @@ const SignInWithGoogleButton = () => {
   if (!isLoaded) return null;
 
   const signInWithGoogle = async () => {
+    if (!isLoaded) return;
+
     await signIn?.authenticateWithRedirect({
       strategy: "oauth_google",
       redirectUrl: "/sso-callback",

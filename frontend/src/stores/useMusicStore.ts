@@ -1,12 +1,18 @@
-import type { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { create } from "zustand";
 import { axiosInstance } from "@/lib/axios";
-import type { Album, ApiError, Song, Stats } from "@/types";
+import {
+  type ApiResponse,
+  type Album,
+  type ApiError,
+  type Song,
+  type Stats,
+} from "@/types";
 import { createToast } from "@/functions";
 
 interface MusicStoreProps {
   songs: Song[];
-  isSongsLoading: boolean;
+  isAllSongsLoading: boolean;
   personalizedSongs: Song[];
   featuredSongs: Song[];
   trendingSongs: Song[];
@@ -14,6 +20,7 @@ interface MusicStoreProps {
   isAlbumsLoading: boolean;
   currentAlbum: Album | null;
   isLoading: boolean;
+  isDeleting: boolean;
   error: string | null;
   stats: Stats;
   isStatsLoading: boolean;
@@ -30,7 +37,7 @@ interface MusicStoreProps {
 
 export const useMusicStore = create<MusicStoreProps>((set) => ({
   songs: [],
-  isSongsLoading: false,
+  isAllSongsLoading: false,
   featuredSongs: [],
   personalizedSongs: [],
   trendingSongs: [],
@@ -38,6 +45,7 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
   isAlbumsLoading: false,
   currentAlbum: null,
   isLoading: false,
+  isDeleting: false,
   error: null,
   stats: {
     totalSongs: 0,
@@ -51,8 +59,10 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
     set({ isAlbumsLoading: true, error: null });
 
     try {
-      const res = await axiosInstance.get<Album[]>("/albums");
-      set({ albums: res.data });
+      const res = await axiosInstance.get<ApiResponse<Album[]>>("/albums");
+
+      if (res.data.success) set({ albums: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
 
@@ -72,8 +82,12 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const res = await axiosInstance.get<Album>(`/albums/${albumID}`);
-      set({ currentAlbum: res.data });
+      const res = await axiosInstance.get<ApiResponse<Album>>(
+        `/albums/${albumID}`,
+      );
+
+      if (res.data.success) set({ currentAlbum: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -92,8 +106,12 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const res = await axiosInstance.get<Song[]>("/songs/personalized");
-      set({ personalizedSongs: res.data });
+      const res = await axiosInstance.get<ApiResponse<Song[]>>(
+        "/songs/personalized",
+      );
+
+      if (res.data.success) set({ personalizedSongs: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -112,8 +130,11 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const res = await axiosInstance.get<Song[]>("/songs/featured");
-      set({ featuredSongs: res.data });
+      const res =
+        await axiosInstance.get<ApiResponse<Song[]>>("/songs/featured");
+
+      if (res.data.success) set({ featuredSongs: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -132,8 +153,11 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const res = await axiosInstance.get<Song[]>("/songs/trending");
-      set({ trendingSongs: res.data });
+      const res =
+        await axiosInstance.get<ApiResponse<Song[]>>("/songs/trending");
+
+      if (res.data.success) set({ trendingSongs: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -149,10 +173,12 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
   },
 
   getAllSongs: async () => {
-    set({ isSongsLoading: true, error: null });
+    set({ isAllSongsLoading: true, error: null });
     try {
-      const response = await axiosInstance.get<Song[]>("/songs");
-      set({ songs: response.data });
+      const res = await axiosInstance.get<ApiResponse<Song[]>>("/songs");
+
+      if (res.data.success) set({ songs: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -163,15 +189,17 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
         set({ error: "An unknown error occurred" });
       }
     } finally {
-      set({ isSongsLoading: false });
+      set({ isAllSongsLoading: false });
     }
   },
 
   getAllStats: async () => {
     set({ isStatsLoading: true, error: null });
     try {
-      const response = await axiosInstance.get<Stats>("/admin/stats");
-      set({ stats: response.data });
+      const res = await axiosInstance.get<ApiResponse<Stats>>("/admin/stats");
+
+      if (res.data.success) set({ stats: res.data.data });
+      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
@@ -187,13 +215,24 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
   },
 
   deleteSong: async (songId) => {
-    set({ isLoading: true, error: null });
+    set({ isDeleting: true, error: null });
+
     try {
-      await axiosInstance.delete(`/admin/songs/${songId}`);
-      set((state) => ({
-        songs: state.songs.filter((song) => song._id !== songId),
-      }));
-      createToast("success", "Song deleted successfully");
+      const res = await axiosInstance.delete<ApiResponse>(
+        `/admin/songs/${songId}`,
+      );
+
+      if (res.data.success) {
+        set((state) => ({
+          songs: state.songs.filter((song) => song._id !== songId),
+        }));
+
+        createToast("success", res.data.message);
+      } else {
+        set({ error: res.data.message });
+
+        createToast("error", res.data.message);
+      }
     } catch (error) {
       createToast("error", "Failed to delete song");
       const axiosError = error as AxiosError<ApiError>;
@@ -205,23 +244,33 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
         set({ error: "An unknown error occurred" });
       }
     } finally {
-      set({ isLoading: false });
+      set({ isDeleting: false });
     }
   },
 
   deleteAlbum: async (albumId) => {
-    set({ isLoading: true, error: null });
+    set({ isDeleting: true, error: null });
+
     try {
-      await axiosInstance.delete(`/admin/albums/${albumId}`);
-      set((state) => ({
-        albums: state.albums.filter((album) => album._id !== albumId),
-        songs: state.songs.map((song) =>
-          song.albumID === state.albums.find((a) => a._id === albumId)?.title
-            ? { ...song, album: null }
-            : song,
-        ),
-      }));
-      createToast("success", "Album deleted successfully");
+      const res = await axiosInstance.delete<ApiResponse>(
+        `/admin/albums/${albumId}`,
+      );
+
+      if (res.data.success) {
+        set((state) => ({
+          albums: state.albums.filter((album) => album._id !== albumId),
+          songs: state.songs.map((song) =>
+            song.albumID === state.albums.find((a) => a._id === albumId)?.title
+              ? { ...song, album: null }
+              : song,
+          ),
+        }));
+        createToast("success", res.data.message);
+      } else {
+        set({ error: res.data.message });
+
+        createToast("error", res.data.message);
+      }
     } catch (error) {
       createToast("error", "Failed to delete album");
       const axiosError = error as AxiosError<ApiError>;
@@ -233,7 +282,7 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
         set({ error: "An unknown error occurred" });
       }
     } finally {
-      set({ isLoading: false });
+      set({ isDeleting: false });
     }
   },
 }));

@@ -34,9 +34,7 @@ export const requireAdmin = async (
       user.primaryEmailAddress?.emailAddress === process.env.ADMIN_EMAIL;
 
     if (!isAdmin)
-      return res
-        .status(403)
-        .json({ message: "Unauthorized. Admin-only route." });
+      return res.status(403).json({ message: "Forbidden. Admin-only route." });
 
     next();
   } catch (error) {

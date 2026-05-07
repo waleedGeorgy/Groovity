@@ -7,8 +7,8 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const UsersPanel = () => {
-    // todo: add loading state
+const UsersActivityPanel = () => {
+    // TODO: add loading state
     const { users, getAllUsers, onlineUsers, usersActivity } = useChatStore(useShallow(state => ({
         users: state.users,
         getAllUsers: state.getAllUsers,
@@ -107,4 +107,4 @@ const UsersPanel = () => {
     )
 }
 
-export default UsersPanel
+export default UsersActivityPanel

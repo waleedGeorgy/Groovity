@@ -10,18 +10,11 @@ const AdminHeader = () => {
                 <LayoutDashboard className="shrink-0 size-7" />
                 <h1 className='text-3xl font-roboto font-semibold truncate'>Admin Dashboard</h1>
             </div>
-            <div className="flex flex-row items-center gap-4">
+            <div className="flex flex-row items-center gap-3">
                 <Button variant="outline" size="sm" asChild>
                     <Link to="/">Home</Link>
                 </Button>
-                <UserButton appearance={{
-                    elements: {
-                        avatarBox: {
-                            width: "2rem",
-                            height: "2rem",
-                        },
-                    },
-                }} />
+                <UserButton />
             </div>
         </div>
     );
