@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { Star, TrendingUp } from "lucide-react";
 import { useMusicStore } from "@/stores/useMusicStore";
 import FeaturedSongsSection from "@/components/FeaturedSongsSection";
@@ -6,7 +7,6 @@ import SongsGridSection from "@/components/SongsGridSection";
 import TopBar from "@/components/TopBar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePlaybackStore } from "@/stores/usePlaybackStore";
-import { useShallow } from "zustand/react/shallow";
 
 const HomePage = () => {
     const { featuredSongs, personalizedSongs, trendingSongs, getPersonalizedSongs, getTrendingSongs, getFeaturedSongs, error, isLoading } = useMusicStore(useShallow(state => ({
@@ -40,7 +40,7 @@ const HomePage = () => {
     return (
         <div className="h-full border border-muted rounded-lg overflow-hidden bg-gradient-to-b from-card from-10% to-indigo-950">
             <TopBar />
-            <ScrollArea className="h-[calc(100vh-(163px))] space-y-1 ">
+            <ScrollArea className="h-[calc(100vh-(158px))]">
                 <FeaturedSongsSection
                     loading={isLoading}
                     songs={featuredSongs}

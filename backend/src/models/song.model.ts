@@ -32,3 +32,4 @@ const songSchema = new mongoose.Schema(
 );
 
 export const Song = mongoose.model("Song", songSchema);
+export type SongType = InstanceType<typeof Song>;

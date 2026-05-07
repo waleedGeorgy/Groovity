@@ -26,14 +26,19 @@ const ChatSendMessage = () => {
         <div className='p-3 mt-auto'>
             <div className='flex items-center gap-2'>
                 <Input
-                    placeholder='Message'
+                    placeholder='Enter a message...'
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                     className="border-none"
                     autoFocus
                 />
-                <Button size="icon" className="bg-indigo-500 hover:bg-indigo-400 cursor-pointer transition-all duration-300 rounded-full" onClick={handleSendMessage} disabled={!newMessage.trim()}>
+                <Button
+                    size="icon"
+                    className="bg-indigo-500 hover:bg-indigo-400 cursor-pointer transition-all duration-300 rounded-full"
+                    onClick={handleSendMessage}
+                    disabled={!newMessage.trim()}
+                >
                     <Send className='size-4' />
                 </Button>
             </div>

@@ -13,6 +13,7 @@ const AuthCallbackPage = () => {
     useEffect(() => {
         const signupUser = async () => {
             if (!isLoaded || !user) return;
+
             try {
                 await axiosInstance.post("/auth/callback", {
                     id: user.id,
@@ -20,6 +21,7 @@ const AuthCallbackPage = () => {
                     lastName: user.lastName,
                     imageUrl: user.imageUrl
                 });
+                
                 void navigate("/");
             } catch (error) {
                 console.error("Auth callback failed:", error);

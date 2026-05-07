@@ -12,6 +12,8 @@ export default function ErrorPage() {
                     return "Page not found";
                 case 401:
                     return "Unauthorized access";
+                case 403:
+                    return "Forbidden";
                 case 500:
                     return "Server error";
                 default:

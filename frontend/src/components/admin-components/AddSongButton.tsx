@@ -1,16 +1,16 @@
 import { useState } from "react"
 import { useShallow } from "zustand/react/shallow"
 import { Loader, PlusCircle } from "lucide-react"
-import type { AxiosError } from "axios"
 import { axiosInstance } from "@/lib/axios"
 import { useMusicStore } from "@/stores/useMusicStore"
-import type { ApiError } from "@/types"
+import type { ApiError, ApiResponse } from "@/types"
 import { createToast } from "@/functions"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select"
 import { Button } from "../ui/button"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
+import type { AxiosError } from "axios"
 
 const AddSongButton = () => {
     const { albums } = useMusicStore(useShallow(state => ({ albums: state.albums })));
@@ -28,6 +28,10 @@ const AddSongButton = () => {
         audio: null
     });
 
+    const { getAllSongs } = useMusicStore(useShallow(state => ({
+        getAllSongs: state.getAllSongs,
+    })));
+
     const handleAddNewSong = async () => {
         setIsFormSubmitting(true);
 
@@ -40,16 +44,31 @@ const AddSongButton = () => {
             formData.append("title", newSong.title);
             formData.append("artist", newSong.artist);
             formData.append("duration", newSong.duration);
-            if (newSong.album && newSong.album !== "none") {
-                formData.append("albumID", newSong.album);
-            }
 
-            await axiosInstance.post("/admin/songs", formData, {
+            if (newSong.album && newSong.album !== "none") formData.append("albumID", newSong.album);
+
+            const res = await axiosInstance.post<ApiResponse>("/admin/songs", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
+            if (res.data.success) {
+                void getAllSongs();
+                createToast("success", res.data.message);
+            } else {
+                createToast("error", res.data.message);
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError<ApiError>;
+            if (axiosError.response?.data?.message) {
+                createToast("error", axiosError.response?.data?.message);
+            } else if (axiosError.message) {
+                createToast("error", axiosError.message);
+            } else {
+                createToast("error", "Failed to create album");
+            }
+        } finally {
             setNewSong({
                 title: "",
                 artist: "",
@@ -62,17 +81,6 @@ const AddSongButton = () => {
                 image: null
             });
 
-            createToast("success", "Song added successfully")
-        } catch (error) {
-            const axiosError = error as AxiosError<ApiError>;
-            if (axiosError.response?.data?.message) {
-                createToast("error", axiosError.response?.data?.message);
-            } else if (axiosError.message) {
-                createToast("error", axiosError.message);
-            } else {
-                createToast("error", "Failed to add song");
-            }
-        } finally {
             setIsFormSubmitting(false);
         }
     };
@@ -84,9 +92,9 @@ const AddSongButton = () => {
                     <PlusCircle /><span>Add Song</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[90%]">
+            <DialogContent>
                 <DialogHeader className="mb-4">
-                    <DialogTitle className="text-2xl font-roboto font-medium">Add New Song</DialogTitle>
+                    <DialogTitle className="text-2xl font-roboto font-medium">Add new song</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-5">
                     <div className="space-y-2">
@@ -94,7 +102,7 @@ const AddSongButton = () => {
                         <Input type="file" className="cursor-pointer" id="image" accept=".png, .jpg, .jpeg .webp" onChange={(e) => setNewSongFiles((prev) => ({ ...prev, image: e.target.files![0] }))} />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="audio" className="opacity-60">Audio Track*</Label>
+                        <Label htmlFor="audio" className="opacity-60">Audio track*</Label>
                         <Input type="file" className="cursor-pointer" id="audio" accept="audio/*" onChange={(e) => setNewSongFiles((prev) => ({ ...prev, audio: e.target.files![0] }))} />
                     </div>
                     <div className="space-y-2">
@@ -134,7 +142,11 @@ const AddSongButton = () => {
                     <DialogClose asChild>
                         <Button variant="outline" disabled={isFormSubmitting} className="cursor-pointer">Cancel</Button>
                     </DialogClose>
-                    <Button onClick={() => void handleAddNewSong()} disabled={isFormSubmitting} variant="secondary" className="bg-indigo-500 hover:bg-indigo-600 transition-all duration-300 cursor-pointer">
+                    <Button
+                        onClick={() => void handleAddNewSong()}
+                        disabled={isFormSubmitting || newSong.title.trim() === "" || newSong.artist.trim() === "" || !newSong.duration || !newSongFiles.image || !newSongFiles.audio}
+                        variant="secondary"
+                        className="bg-indigo-500 hover:bg-indigo-600 transition-all duration-300 cursor-pointer">
                         {isFormSubmitting ?
                             <span className="flex flex-row items-center justify-center gap-2"><Loader className="animate-spin" />Adding</span>
                             :

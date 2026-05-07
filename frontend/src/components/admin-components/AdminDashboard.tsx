@@ -42,13 +42,14 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3.5">
+    <div className="flex flex-wrap items-center justify-center gap-4">
       {isStatsLoading ?
         <StatsCardsSkeleton />
         :
-        statsItems.map((item, id) =>
-          <StatsCard key={id} {...item} />
-        )}
+        statsItems.map((item) =>
+          <StatsCard key={item.label} {...item} />
+        )
+      }
     </div>
   )
 }

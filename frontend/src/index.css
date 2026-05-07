@@ -120,6 +120,7 @@
     @apply bg-background text-foreground;
   }
 }
+
 @theme {
   --font-roboto: "Roboto Condensed", sans-serif;
   --font-lato: "Lato", sans-serif;

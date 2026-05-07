@@ -19,12 +19,12 @@ const ChatPage = () => {
     })));
 
     useEffect(() => {
-        if (user) void getAllUsers();
-    }, [getAllUsers, user]);
+        if (selectedUser) void fetchMessages(selectedUser.clerkID);
+    }, [fetchMessages, selectedUser]);
 
     useEffect(() => {
-        if (selectedUser) void fetchMessages(selectedUser.clerkID);
-    }, [fetchMessages, selectedUser])
+        if (user) void getAllUsers();
+    }, [getAllUsers, user, fetchMessages, selectedUser]);
 
     return (
         <div className="rounded-lg overflow-hidden bg-card border">
@@ -39,10 +39,7 @@ const ChatPage = () => {
                     :
                     <div className="flex flex-1 flex-col justify-center items-center gap-4">
                         <div className="relative">
-                            <div
-                                className='absolute -inset-1.5 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin'
-                                aria-hidden="true"
-                            />
+                            <div className='absolute -inset-1.5 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin' />
                             <img src={logo} alt="Logo of Groovity" className="size-14 animate-wiggle" />
                         </div>
                         <div className="text-center">

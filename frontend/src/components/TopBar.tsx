@@ -28,14 +28,7 @@ const TopBar = () => {
                 <SignedOut>
                     <SignInWithGoogleButton />
                 </SignedOut>
-                <UserButton appearance={{
-                    elements: {
-                        avatarBox: {
-                            width: "2rem",
-                            height: "2rem",
-                        },
-                    },
-                }} />
+                <UserButton />
             </div>
         </nav>
     )

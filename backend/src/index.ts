@@ -77,6 +77,7 @@ app.use("/api/albums", albumRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({
+    success: false,
     message:
       process.env.NODE_ENV === "production"
         ? "Internal Server Error"

@@ -17,10 +17,14 @@ export const createSong = async (
 ) => {
   try {
     if (!req.files || !req.files.imageFile)
-      return res.status(400).json({ message: "Please provide an image." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide an image." });
 
     if (!req.files || !req.files.audioFile)
-      return res.status(400).json({ message: "Please provide an audio file." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide an audio file." });
 
     const audioFile = req.files.audioFile;
     const imageFile = req.files.imageFile;
@@ -28,15 +32,20 @@ export const createSong = async (
     const { title, artist, duration, albumID } = req.body;
 
     if (!title || title.trim().length === 0)
-      return res.status(400).json({ message: "Please provide a song title." });
-
-    if (!artist || artist.trim().length === 0)
-      return res.status(400).json({ message: "Please provide a song artist." });
-
-    if (!duration || duration === 0)
       return res
         .status(400)
-        .json({ message: "Please provide a valid song duration." });
+        .json({ success: false, message: "Please provide a song title." });
+
+    if (!artist || artist.trim().length === 0)
+      return res
+        .status(400)
+        .json({ success: false, message: "Please provide a song artist." });
+
+    if (!duration || duration === 0)
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid song duration.",
+      });
 
     const [imageURL, audioURL] = await Promise.all([
       cloudinaryUploader(imageFile as UploadedFile),
@@ -60,7 +69,7 @@ export const createSong = async (
       });
     }
 
-    res.status(201).json(song);
+    res.status(201).json({ success: true, message: "Song added successfully" });
   } catch (error) {
     console.log(error);
     next(error);
@@ -74,10 +83,16 @@ export const deleteSong = async (
 ) => {
   try {
     const { songID } = req.params;
-    if (!songID) return res.status(400).json({ message: "Invalid song ID" });
+    if (!songID)
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid song ID" });
 
     const song = await Song.findById(songID);
-    if (!song) return res.status(400).json({ message: "Song does not exist" });
+    if (!song)
+      return res
+        .status(400)
+        .json({ success: false, message: "Song does not exist" });
 
     if (song.albumID) {
       await Album.findByIdAndUpdate(song.albumID, {
@@ -87,7 +102,9 @@ export const deleteSong = async (
 
     await Song.findByIdAndDelete(songID);
 
-    return res.status(200).json({ message: "Song deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Song deleted successfully" });
   } catch (error) {
     console.log(error);
     next(error);
@@ -101,7 +118,9 @@ export const createAlbum = async (
 ) => {
   try {
     if (!req.files || !req.files.imageFile)
-      return res.status(400).json({ message: "Please add an album image." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please add an album image." });
 
     const imageFile = req.files.imageFile;
 
@@ -110,17 +129,18 @@ export const createAlbum = async (
     if (!title || title.trim().length === 0)
       return res
         .status(400)
-        .json({ message: "Please provide an album title." });
+        .json({ success: false, message: "Please provide an album title." });
 
     if (!artist || artist.trim().length === 0)
       return res
         .status(400)
-        .json({ message: "Please provide an album artist." });
+        .json({ success: false, message: "Please provide an album artist." });
 
     if (!releaseYear || releaseYear === 0)
-      return res
-        .status(400)
-        .json({ message: "Please provide a valid album year." });
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid album year.",
+      });
 
     const imageURL = await cloudinaryUploader(imageFile as UploadedFile);
 
@@ -133,7 +153,9 @@ export const createAlbum = async (
 
     (await album).save();
 
-    return res.status(201).json(album);
+    return res
+      .status(201)
+      .json({ success: true, message: "Album created successfully" });
   } catch (error) {
     console.log(error);
     next(error);
@@ -147,17 +169,24 @@ export const deleteAlbum = async (
 ) => {
   try {
     const { albumID } = req.params;
-    if (!albumID) return res.status(400).json({ message: "Invalid album ID" });
+    if (!albumID)
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid album ID" });
 
     const album = await Album.findById(albumID);
     if (!album)
-      return res.status(400).json({ message: "Album does not exist" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Album does not exist" });
 
     await Song.deleteMany({ albumID: albumID });
 
     await Album.findByIdAndDelete(albumID);
 
-    return res.status(200).json({ message: "Album deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Album deleted successfully" });
   } catch (error) {
     console.log(error);
     next(error);
@@ -189,7 +218,7 @@ export const getStats = async (
   next: NextFunction,
 ) => {
   try {
-    const [totalSongs, totalAlbums, totalUsers, uniqueArtists] =
+    const [totalSongs, totalAlbums, totalUsers, totalArtists] =
       await Promise.all([
         Song.countDocuments(),
         Album.countDocuments(),
@@ -212,11 +241,22 @@ export const getStats = async (
         ]),
       ]);
 
+    if (
+      (!totalSongs && !totalAlbums && !totalUsers) ||
+      totalArtists.length === 0
+    ) {
+      return res.json(404).json({ success: false, message: "No stats found" });
+    }
+
     return res.status(200).json({
-      totalSongs,
-      totalUsers,
-      totalAlbums,
-      totalArtists: uniqueArtists[0]?.count || 0,
+      success: true,
+      message: "Stats fetched successfully",
+      data: {
+        totalSongs,
+        totalUsers,
+        totalAlbums,
+        totalArtists: totalArtists[0].count || 0,
+      },
     });
   } catch (error) {
     console.log(error);

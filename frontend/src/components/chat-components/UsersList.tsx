@@ -25,7 +25,7 @@ const UsersList = () => {
                                 No one to chat to
                             </span>
                             :
-                            users.map((user) => (
+                            users.map(user => (
                                 <div
                                     key={user._id}
                                     onClick={() => setSelectedUser(user)}
@@ -37,9 +37,7 @@ const UsersList = () => {
                                             <AvatarImage src={user.imageURL} />
                                             <AvatarFallback>{user.name[0]}</AvatarFallback>
                                         </Avatar>
-                                        <div
-                                            className={`absolute bottom-0.5 right-0.5 size-2 rounded-full ring-1 ring-muted ${onlineUsers.has(user.clerkID) ? "bg-green-500" : "bg-zinc-600"}`}
-                                        />
+                                        <div className={`absolute bottom-0.5 right-0.5 size-2 rounded-full ring-1 ring-muted ${onlineUsers.has(user.clerkID) ? "bg-green-500" : "bg-zinc-600"}`} />
                                     </div>
                                     <div className='flex-1 min-w-0 lg:block hidden'>
                                         <span className='truncate'>{user.name}</span>

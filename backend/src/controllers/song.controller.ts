@@ -1,5 +1,5 @@
 import { type NextFunction, type Request, type Response } from "express";
-import { Song } from "../models/song.model.ts";
+import { Song, type SongType } from "../models/song.model.ts";
 
 //todo: Implement a more advanced algorithm for suggesting songs
 export const getAllSongs = async (
@@ -9,9 +9,16 @@ export const getAllSongs = async (
 ) => {
   try {
     const songs = await Song.find().sort({ _id: -1 });
-    if (!songs) return res.status(400).json({ message: "No songs found" });
+    if (!songs || songs.length === 0)
+      return res
+        .status(404)
+        .json({ success: false, message: "No songs found" });
 
-    return res.status(200).json(songs);
+    return res.status(200).json({
+      success: true,
+      message: "Songs fetched successfully",
+      data: songs,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -24,7 +31,7 @@ export const getFeaturedSongs = async (
   next: NextFunction,
 ) => {
   try {
-    const featuredSongs = await Song.aggregate([
+    const featuredSongs = await Song.aggregate<SongType[]>([
       {
         $sample: { size: 6 },
       },
@@ -39,12 +46,16 @@ export const getFeaturedSongs = async (
         },
       },
     ]);
-    if (!featuredSongs)
+    if (!featuredSongs || featuredSongs.length === 0)
       return res
-        .status(400)
-        .json({ message: "Could not fetch featured songs" });
+        .status(404)
+        .json({ success: false, message: "No featured songs found" });
 
-    return res.status(200).json(featuredSongs);
+    return res.status(200).json({
+      success: true,
+      message: "Featured songs fetched successfully",
+      data: featuredSongs,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -57,7 +68,7 @@ export const getPersonalizedSongs = async (
   next: NextFunction,
 ) => {
   try {
-    const personalizedSongs = await Song.aggregate([
+    const personalizedSongs = await Song.aggregate<SongType[]>([
       {
         $sample: { size: 4 },
       },
@@ -72,12 +83,17 @@ export const getPersonalizedSongs = async (
         },
       },
     ]);
-    if (!personalizedSongs)
-      return res
-        .status(400)
-        .json({ message: "Could not fetch personalized songs" });
+    if (!personalizedSongs || personalizedSongs.length === 0)
+      return res.status(404).json({
+        success: false,
+        message: "No personalized songs found",
+      });
 
-    return res.status(200).json(personalizedSongs);
+    return res.status(200).json({
+      success: true,
+      message: "Personalized songs fetched successfully",
+      data: personalizedSongs,
+    });
   } catch (error) {
     console.log(error);
     next(error);
@@ -90,7 +106,7 @@ export const getTrendingSongs = async (
   next: NextFunction,
 ) => {
   try {
-    const trendingSongs = await Song.aggregate([
+    const trendingSongs = await Song.aggregate<SongType[]>([
       {
         $sample: { size: 4 },
       },
@@ -105,12 +121,16 @@ export const getTrendingSongs = async (
         },
       },
     ]);
-    if (!trendingSongs)
+    if (!trendingSongs || trendingSongs.length === 0)
       return res
-        .status(400)
-        .json({ message: "Could not fetch trending songs" });
+        .status(404)
+        .json({ success: false, message: "No trending songs found" });
 
-    return res.status(200).json(trendingSongs);
+    return res.status(200).json({
+      success: true,
+      message: "Trending songs fetched successfully",
+      data: trendingSongs,
+    });
   } catch (error) {
     console.log(error);
     next(error);

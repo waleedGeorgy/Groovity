@@ -35,6 +35,12 @@ export interface ApiError {
   status?: number;
 }
 
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
 export interface Stats {
   totalSongs: number;
   totalArtists: number;

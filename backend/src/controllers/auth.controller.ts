@@ -26,9 +26,11 @@ export const authCallback = async (
 
       return res
         .status(200)
-        .json({ success: true, message: "User authenticated successfully" });
+        .json({ success: true, message: "Successfully signed up" });
     } else {
-      return res.status(200).json({ success: true });
+      return res
+        .status(200)
+        .json({ success: true, message: "Successfully signed in" });
     }
   } catch (error) {
     console.log(error);

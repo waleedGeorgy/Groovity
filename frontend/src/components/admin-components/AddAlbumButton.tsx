@@ -1,13 +1,15 @@
 import { useState } from "react"
-import type { AxiosError } from "axios"
 import { Loader, PlusCircle } from "lucide-react"
 import { axiosInstance } from "@/lib/axios"
 import { createToast } from "@/functions"
-import type { ApiError } from "@/types"
+import type { ApiError, ApiResponse } from "@/types"
 import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
+import type { AxiosError } from "axios"
+import { useMusicStore } from "@/stores/useMusicStore"
+import { useShallow } from "zustand/react/shallow"
 
 const AddAlbumButton = () => {
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -18,6 +20,10 @@ const AddAlbumButton = () => {
     });
 
     const [newAlbumImage, setNewAlbumImage] = useState<File | null>(null);
+
+    const { getAllAlbums } = useMusicStore(useShallow(state => ({
+        getAllAlbums: state.getAllAlbums,
+    })));
 
     const handleAddNewAlbum = async () => {
         setIsFormSubmitting(true);
@@ -30,20 +36,18 @@ const AddAlbumButton = () => {
             formData.append("artist", newAlbum.artist);
             formData.append("releaseYear", newAlbum.releaseYear.toString());
 
-            await axiosInstance.post("/admin/albums", formData, {
+            const res = await axiosInstance.post<ApiResponse>("/admin/albums", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            setNewAlbum({
-                title: "",
-                artist: "",
-                releaseYear: new Date().getFullYear()
-            });
-            setNewAlbumImage(null);
-
-            createToast("success", "Album created successfully");
+            if (res.data.success) {
+                void getAllAlbums();
+                createToast("success", res.data.message);
+            } else {
+                createToast("error", res.data.message);
+            }
         } catch (error) {
             const axiosError = error as AxiosError<ApiError>;
             if (axiosError.response?.data?.message) {
@@ -54,6 +58,13 @@ const AddAlbumButton = () => {
                 createToast("error", "Failed to create album");
             }
         } finally {
+            setNewAlbum({
+                title: "",
+                artist: "",
+                releaseYear: new Date().getFullYear()
+            });
+            setNewAlbumImage(null);
+
             setIsFormSubmitting(false);
         }
     }
@@ -65,13 +76,13 @@ const AddAlbumButton = () => {
                     <PlusCircle />Create Album
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[90%]">
+            <DialogContent>
                 <DialogHeader className="mb-4">
-                    <DialogTitle className="text-2xl font-roboto font-medium">Add New Album</DialogTitle>
+                    <DialogTitle className="text-2xl font-roboto font-medium">Create new album</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-5">
                     <div className="space-y-2">
-                        <Label htmlFor="image" className="opacity-60">Album Cover*</Label>
+                        <Label htmlFor="image" className="opacity-60">Album cover*</Label>
                         <Input type="file" className="cursor-pointer" id="image" accept=".png, .jpg, .jpeg .webp" onChange={(e) => setNewAlbumImage(e.target.files![0])} />
                     </div>
                     <div className="space-y-2">
@@ -83,7 +94,7 @@ const AddAlbumButton = () => {
                         <Input value={newAlbum.artist} id="artist" onChange={(e) => setNewAlbum({ ...newAlbum, artist: e.target.value })} />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="duration" className="opacity-60">Release Year*</Label>
+                        <Label htmlFor="duration" className="opacity-60">Release year*</Label>
                         <Input value={newAlbum.releaseYear} id="duration" onChange={(e) => setNewAlbum({ ...newAlbum, releaseYear: parseInt(e.target.value) })} />
                     </div>
                 </div>
@@ -93,7 +104,7 @@ const AddAlbumButton = () => {
                     </DialogClose>
                     <Button
                         onClick={() => void handleAddNewAlbum()}
-                        disabled={isFormSubmitting}
+                        disabled={isFormSubmitting || newAlbum.artist.trim() === "" || newAlbum.title.trim() === "" || !newAlbum.releaseYear || !newAlbumImage}
                         variant="secondary"
                         className="bg-indigo-500 hover:bg-indigo-600 transition-all duration-300 cursor-pointer"
                     >
