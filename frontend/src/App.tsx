@@ -35,7 +35,7 @@ function App() {
     },
     {
       path: "/sso-callback",
-      element: <AuthenticateWithRedirectCallback signUpForceRedirectUrl={"/auth-callback"} />
+      element: <AuthenticateWithRedirectCallback />
     },
     {
       path: "/auth-callback",

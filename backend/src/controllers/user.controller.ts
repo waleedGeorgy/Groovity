@@ -11,18 +11,13 @@ export const getAllUsers = async (
   try {
     const { userId } = getAuth(req);
     const users = await User.find({ clerkID: { $ne: userId } });
-    if (!users || users.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "No users to fetch" });
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Users fetched successfully",
-        data: users,
-      });
+    return res.status(200).json({
+      success: true,
+      message:
+        users.length === 0 ? "No users to fetch" : "Users fetched successfully",
+      data: users,
+    });
   } catch (error) {
     console.log(error);
     next(error);

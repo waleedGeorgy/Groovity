@@ -21,7 +21,7 @@ const UsersList = () => {
                         <UsersListSkeleton />
                         :
                         users.length === 0 ?
-                            <span className="min-h-screen flex items-center justify-center -mt-20 font-roboto text-lg opacity-60">
+                            <span className="min-h-screen flex items-center justify-center -mt-20 font-roboto opacity-60 text-center truncate">
                                 No one to chat to
                             </span>
                             :

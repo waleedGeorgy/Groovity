@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { io, Socket } from "socket.io-client";
 import type { AxiosError } from "axios";
 import { axiosInstance } from "@/lib/axios";
-import type { ApiError, Message, User } from "@/types";
+import type { ApiError, ApiResponse, Message, User } from "@/types";
 
 interface chatStoreProps {
   users: User[];
@@ -46,8 +46,9 @@ export const useChatStore = create<chatStoreProps>((set, get) => ({
   getAllUsers: async () => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axiosInstance.get<User[]>("/users");
-      set({ users: res.data });
+      const res = await axiosInstance.get<ApiResponse<User[]>>("/users");
+      if (res.data.success) set({ users: res.data.data });
+
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {
