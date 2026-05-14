@@ -48,7 +48,7 @@ const PlaybackControls = () => {
 
   return (
     <footer className='py-3 bg-card border-t px-8'>
-      <div className='flex flex-wrap gap-6 justify-between items-center h-full'>
+      <div className='flex gap-2 justify-between items-center h-full'>
         {/* currently playing song info */}
         <div className='flex items-center gap-3 flex-1'>
           {currentSong && (
@@ -56,7 +56,7 @@ const PlaybackControls = () => {
               <img
                 src={currentSong.imageURL}
                 alt={currentSong.title}
-                className='size-10 sm:size-14 object-cover aspect-square rounded-md border'
+                className='hidden sm:inline-block size-14 object-cover aspect-square rounded-md border'
               />
               <div className='flex-1 min-w-0 inline-block'>
                 <h2 className='truncate text-sm sm:text-base'>
@@ -86,15 +86,15 @@ const PlaybackControls = () => {
               onClick={playPrevSong}
               disabled={!currentSong}
             >
-              <SkipBack className='size-4' />
+              <SkipBack className='sm:size-4 size-3.5' />
             </Button>
             <Button
               size='icon'
-              className='bg-indigo-500 hover:bg-indigo-400 cursor-pointer rounded-full size-9'
+              className='bg-indigo-500 hover:bg-indigo-400 cursor-pointer rounded-full sm:size-9 size-8'
               onClick={toggleSongPlay}
               disabled={!currentSong}
             >
-              {isSongPlaying ? <Pause className='size-4' /> : <Play className='size-4' />}
+              {isSongPlaying ? <Pause className='sm:size-4 size-3.5' /> : <Play className='sm:size-4 size-3.5' />}
             </Button>
             <Button
               size='icon'
@@ -103,7 +103,7 @@ const PlaybackControls = () => {
               onClick={playNextSong}
               disabled={!currentSong}
             >
-              <SkipForward className='size-4' />
+              <SkipForward className='sm:size-4 size-3.5' />
             </Button>
             <Button
               size='icon'
@@ -113,13 +113,13 @@ const PlaybackControls = () => {
               <Repeat className='size-4' />
             </Button>
           </div>
-          <div className='hidden sm:flex items-center gap-2 w-full'>
+          <div className='flex items-center gap-2 w-full'>
             <div className='text-xs text-zinc-400'>{durationInMinutes(currentTime)}</div>
             <Slider
               value={[currentTime]}
               max={duration || 100}
               step={1}
-              className='w-full hover:cursor-grab active:cursor-grabbing'
+              className='hover:cursor-grab active:cursor-grabbing'
               onValueChange={handleSeekControls}
             />
             <div className='text-xs text-zinc-400'>{durationInMinutes(duration)}</div>
@@ -145,7 +145,7 @@ const PlaybackControls = () => {
               value={[volume]}
               max={100}
               step={1}
-              className='w-28 hover:cursor-grab active:cursor-grabbing'
+              className='w-16 md:w-24 lg:w-28 hover:cursor-grab active:cursor-grabbing'
               onValueChange={(value) => {
                 setVolume(value[0]);
                 if (audioRef.current) audioRef.current.volume = value[0] / 100;

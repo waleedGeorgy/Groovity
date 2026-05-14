@@ -66,7 +66,7 @@ const UsersActivityPanel = () => {
                                                         <span className='text-sm truncate'>{user.name}</span>
                                                         {isPlaying && <Music4 className='size-4 text-indigo-500 shrink-0 animate-wiggle' />}
                                                     </div>
-                                                    {isPlaying ? (
+                                                    {isPlaying ?
                                                         <div className='mt-1'>
                                                             <div className='text-sm font-semibold truncate'>
                                                                 {playingSong}
@@ -75,9 +75,9 @@ const UsersActivityPanel = () => {
                                                                 {playingArtist}
                                                             </div>
                                                         </div>
-                                                    ) : (
+                                                        :
                                                         <div className='mt-1 text-xs opacity-60'>Idle</div>
-                                                    )}
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
