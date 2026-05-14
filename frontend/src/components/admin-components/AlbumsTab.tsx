@@ -54,8 +54,8 @@ const AlbumsTab = () => {
         <Card className="bg-gradient-to-br from-card from-60% to to-teal-950 to-100%">
             <CardHeader>
                 <div className="flex flex-row items-center justify-between gap-1">
-                    <h2 className="flex items-center gap-1 text-2xl font-roboto">
-                        <Library className="size-7 text-indigo-500" />Albums library
+                    <h2 className="flex items-center gap-1 sm:text-2xl text-xl font-roboto">
+                        <Library className="sm:inline hidden size-5 text-indigo-500" />Albums library
                     </h2>
                     <AddAlbumButton />
                 </div>
@@ -64,12 +64,12 @@ const AlbumsTab = () => {
                 <ScrollArea className="h-80">
                     <Table>
                         <TableHeader className="sticky">
-                            <TableRow className="font-roboto text-base p-4 opacity-60">
-                                <TableHead><span className="flex items-center gap-1"><Disc3 className="size-4 inline" />Title</span></TableHead>
-                                <TableHead><span className="flex items-center gap-1"><UserStar className="size-4 inline" />Artist</span></TableHead>
-                                <TableHead><span className="flex items-center gap-1"><Music className="size-4 inline" />Tracks</span></TableHead>
-                                <TableHead><span className="flex items-center gap-1"><Calendar1 className="size-4 inline" />Release Year</span></TableHead>
-                                <TableHead><span className="flex justify-end items-center gap-1"><Settings className="size-4 inline" />Actions</span></TableHead>
+                            <TableRow className="font-roboto text-base opacity-60">
+                                <TableHead><p className="flex items-center gap-1"><Disc3 className="size-4 sm:inline hidden" />Title</p></TableHead>
+                                <TableHead><p className="flex items-center gap-1"><UserStar className="size-4 sm:inline hidden" />Artist</p></TableHead>
+                                <TableHead><p className="flex items-center gap-1"><Music className="size-4 sm:inline hidden" />Tracks</p></TableHead>
+                                <TableHead><p className="flex items-center gap-1"><Calendar1 className="size-4 sm:inline hidden" />Release Year</p></TableHead>
+                                <TableHead><p className="flex justify-end items-center gap-1"><Settings className="size-4 sm:inline hidden" />Actions</p></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -84,7 +84,7 @@ const AlbumsTab = () => {
                                     <TableRow key={album._id}>
                                         <TableCell className="font-medium">
                                             <div className="flex flex-row items-center gap-2">
-                                                <img src={album.imageURL} alt={album.title} className="size-10 aspect-square rounded-md object-cover" />
+                                                <img src={album.imageURL} alt={album.title} className="size-10 aspect-square rounded-md object-cover hidden sm:inline" />
                                                 <h3>{album.title}</h3>
                                             </div>
                                         </TableCell>
@@ -100,7 +100,7 @@ const AlbumsTab = () => {
                                                 disabled={isDeleting}
                                             >
                                                 <Trash2 className="ml-auto size-4 transition-all duration-300 text-red-400 cursor-pointer" />
-                                                <span className="font-xs">Delete</span>
+                                                <span className="hidden sm:inline-block font-xs">Delete</span>
                                             </Button>
                                         </TableCell>
                                     </TableRow>

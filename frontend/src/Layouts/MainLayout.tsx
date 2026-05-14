@@ -20,7 +20,7 @@ const MainLayout = () => {
                         <Outlet />
                     </ResizablePanel>
                     <ResizableHandle withHandle className="bg-background hover:bg-indigo-700 mx-0.5 px-0.5 rounded-lg transition duration-100" />
-                    <ResizablePanel defaultSize={20} minSize={0} maxSize={25}>
+                    <ResizablePanel defaultSize={20} minSize={0} maxSize={20} collapsedSize={0}>
                         <RightNavbar />
                         <PlaylistArea />
                     </ResizablePanel>

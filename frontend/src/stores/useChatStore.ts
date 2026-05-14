@@ -48,7 +48,6 @@ export const useChatStore = create<chatStoreProps>((set, get) => ({
     try {
       const res = await axiosInstance.get<ApiResponse<User[]>>("/users");
       if (res.data.success) set({ users: res.data.data });
-
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {

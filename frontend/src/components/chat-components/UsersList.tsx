@@ -15,13 +15,13 @@ const UsersList = () => {
 
     return (
         <div className="h-full">
-            <ScrollArea className='h-[calc(100vh-160px)] border-t border-l rounded-lg'>
+            <ScrollArea className='h-[calc(100vh-160px)] border-t border-l'>
                 <div className='space-y-2'>
                     {isLoading ?
                         <UsersListSkeleton />
                         :
                         users.length === 0 ?
-                            <span className="min-h-screen flex items-center justify-center -mt-20 font-roboto opacity-60 text-center truncate">
+                            <span className="min-h-screen flex items-center justify-center -mt-20 font-roboto opacity-60 truncate -rotate-90 lg:rotate-0 lg:text-base text-sm">
                                 No one to chat to
                             </span>
                             :

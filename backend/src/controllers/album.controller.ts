@@ -8,14 +8,11 @@ export const getAllAlbums = async (
 ) => {
   try {
     const albums = await Album.find().sort({ _id: -1 });
-    if (!albums || albums.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "No albums found" });
 
     return res.status(200).json({
       success: true,
-      message: "Albums fetched successfully",
+      message:
+        albums.length === 0 ? "No albums found" : "Albums fetched successfully",
       data: albums,
     });
   } catch (error) {
@@ -32,15 +29,11 @@ export const getAlbumByID = async (
   try {
     const { albumID } = req.params;
     const album = await Album.findById(albumID).populate("songs");
-    if (!album)
-      return res
-        .status(404)
-        .json({ success: false, message: "Album does not exist" });
 
     return res.status(200).json({
       success: true,
-      message: "Album fetched successfully",
-      data: album,
+      message: album ? "Album fetched successfully" : "Album does not exist",
+      data: album ?? null,
     });
   } catch (error) {
     console.log(error);

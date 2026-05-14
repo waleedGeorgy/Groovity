@@ -73,7 +73,7 @@ const AddAlbumButton = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button size="sm" className="cursor-pointer bg-emerald-500 hover:bg-emerald-400">
-                    <PlusCircle />Create Album
+                    <PlusCircle /><span className="hidden sm:inline-block">Create Album</span>
                 </Button>
             </DialogTrigger>
             <DialogContent>

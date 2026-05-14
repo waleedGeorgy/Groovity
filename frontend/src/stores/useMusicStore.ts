@@ -60,12 +60,9 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
 
     try {
       const res = await axiosInstance.get<ApiResponse<Album[]>>("/albums");
-
       if (res.data.success) set({ albums: res.data.data });
-      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
-
       if (axiosError.response?.data?.message) {
         set({ error: axiosError.response.data.message });
       } else if (axiosError.message) {
@@ -85,9 +82,7 @@ export const useMusicStore = create<MusicStoreProps>((set) => ({
       const res = await axiosInstance.get<ApiResponse<Album>>(
         `/albums/${albumID}`,
       );
-
       if (res.data.success) set({ currentAlbum: res.data.data });
-      else set({ error: res.data.message });
     } catch (error) {
       const axiosError = error as AxiosError<ApiError>;
       if (axiosError.response?.data?.message) {

@@ -28,13 +28,13 @@ const UsersActivityPanel = () => {
                 <div className="h-full">
                     <div className="flex flex-row items-center gap-2 p-4">
                         <Users className="size-5 shrink-0 truncate" />
-                        <h2 className="hidden md:inline-block truncate">Friends activity</h2>
+                        <h2 className="truncate">Friends activity</h2>
                     </div>
                     <Separator className="my-0 max-w-[90%] mx-auto" />
                     <ScrollArea className="flex-1 h-[calc(100vh-10rem)]">
                         <div className='p-2 space-y-2'>
                             {users.length === 0 ?
-                                <span className="min-h-[calc(100vh-200px)] font-roboto text-lg flex items-center justify-center truncate opacity-60">
+                                <span className="min-h-screen -mt-20 font-roboto lg:text-base text-sm flex items-center justify-center truncate opacity-60">
                                     No one's here
                                 </span>
                                 :

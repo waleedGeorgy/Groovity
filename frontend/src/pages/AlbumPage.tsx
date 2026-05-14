@@ -16,7 +16,7 @@ const AlbumPage = () => {
         isLoading: state.isLoading,
         getAlbumByID: state.getAlbumByID
     })));
-    
+
     const { isSongPlaying, currentSong, toggleSongPlay, playAlbum, stopSong } = usePlaybackStore(useShallow(state => ({
         isSongPlaying: state.isSongPlaying,
         currentSong: state.currentSong,
@@ -116,13 +116,13 @@ const AlbumPage = () => {
                         <>
                             <img className="size-60 rounded border object-cover" src={currentAlbum?.imageURL} alt={currentAlbum?.title} />
                             <div className="flex flex-col justify-center gap-1">
-                                <h3 className="flex items-center gap-1 truncate text-xl"><UserStar className="size-5" />{currentAlbum?.artist}</h3>
-                                <h2 className="text-7xl font-roboto font-bold tracking-tight py-1">{currentAlbum?.title}</h2>
+                                <h3 className="flex items-center gap-1 truncate md:text-xl text-base"><UserStar className="md:size-5 size-4" />{currentAlbum?.artist}</h3>
+                                <h2 className="lg:text-7xl md:text-6xl text-4xl font-roboto font-bold tracking-tight py-1">{currentAlbum?.title}</h2>
                                 <div className="flex flex-row gap-x-5 items-center ml-1 text-sm">
-                                    <span className="flex items-center gap-1 opacity-60 truncate"><Disc3 className="size-4" />{currentAlbum?.songs.length} Songs</span>
-                                    <span className="flex items-center gap-1 opacity-60 truncate"><Clock4 className="size-4" />{albumDuration()}</span>
-                                    <span className="flex items-center gap-1 opacity-60 truncate"><Calendar1 className="size-4" />{currentAlbum?.releaseYear}</span>
-                                    <span className="flex items-center gap-1 opacity-60 truncate"><FilePlus className="size-4" />{new Date(currentAlbum?.createdAt.split("T")[0] ?? new Date()).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
+                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Disc3 className="md:size-3.5 size-3" />{currentAlbum?.songs.length} Songs</span>
+                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Clock4 className="md:size-3.5 size-3" />{albumDuration()}</span>
+                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Calendar1 className="md:size-3.5 size-3" />{currentAlbum?.releaseYear}</span>
+                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><FilePlus className="md:size-3.5 size-3" />{new Date(currentAlbum?.createdAt.split("T")[0] ?? new Date()).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
                                 </div>
                             </div>
                         </>

@@ -55,8 +55,8 @@ const SongsTab = () => {
     <Card className="bg-gradient-to-br from-card from-60% to to-amber-950 to-100%">
       <CardHeader>
         <div className="flex flex-row items-center justify-between gap-1">
-          <h2 className="flex items-center gap-1 text-2xl font-roboto">
-            <Music2 className="size-6 text-indigo-500" />Songs library
+          <h2 className="flex items-center gap-1 sm:text-2xl text-xl font-roboto">
+            <Music2 className="sm:inline hidden text-indigo-500" />Songs library
           </h2>
           <AddSongButton />
         </div>
@@ -66,10 +66,10 @@ const SongsTab = () => {
           <Table>
             <TableHeader className="sticky">
               <TableRow className="font-roboto text-base p-4 opacity-60">
-                <TableHead><span className="flex items-center gap-1"><Disc3 className="size-4 inline" />Title</span></TableHead>
-                <TableHead><span className="flex items-center gap-1"><UserStar className="size-4 inline" />Artist</span></TableHead>
-                <TableHead><span className="flex items-center gap-1"><Clock4 className="size-4 inline" />Duration</span></TableHead>
-                <TableHead><span className="flex justify-end items-center gap-1"><Settings className="size-4 inline" />Actions</span></TableHead>
+                <TableHead><span className="flex items-center gap-1"><Disc3 className="size-4 sm:inline hidden" />Title</span></TableHead>
+                <TableHead><span className="flex items-center gap-1"><UserStar className="size-4 sm:inline hidden" />Artist</span></TableHead>
+                <TableHead><span className="flex items-center gap-1"><Clock4 className="size-4 sm:inline hidden" />Duration</span></TableHead>
+                <TableHead><span className="flex justify-end items-center gap-1"><Settings className="size-4 sm:inline hidden" />Actions</span></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -84,7 +84,7 @@ const SongsTab = () => {
                   <TableRow key={song._id}>
                     <TableCell className="font-medium">
                       <div className="flex flex-row items-center gap-2">
-                        <img src={song.imageURL} alt={song.title} className="size-10 aspect-square rounded-md object-cover" />
+                        <img src={song.imageURL} alt={song.title} className="size-10 aspect-square rounded-md object-cover hidden sm:inline" />
                         <h3>{song.title}</h3>
                       </div>
                     </TableCell>
@@ -99,7 +99,7 @@ const SongsTab = () => {
                         disabled={isDeleting}
                       >
                         <Trash2 className="ml-auto size-4 transition-all duration-300 text-red-400 cursor-pointer" />
-                        <span className="font-xs">Delete</span>
+                        <span className="hidden sm:inline-block font-xs">Delete</span>
                       </Button>
                     </TableCell>
                   </TableRow>

@@ -40,11 +40,11 @@ const ChatPage = () => {
                     <div className="flex flex-1 flex-col justify-center items-center gap-4">
                         <div className="relative">
                             <div className='absolute -inset-1.5 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin' />
-                            <img src={logo} alt="Logo of Groovity" className="size-14 animate-wiggle" />
+                            <img src={logo} alt="Logo of Groovity" className="md:size-14 size-11 animate-wiggle" />
                         </div>
-                        <div className="text-center">
-                            <h2 className="font-roboto text-xl">No active conversation.</h2>
-                            <p className="opacity-60 text-sm">Select a friend and start chatting!</p>
+                        <div className="text-center truncate">
+                            <h2 className="font-roboto md:text-xl text-base">No active conversation.</h2>
+                            <p className="opacity-60 md:text-sm text-xs">Select a friend and start chatting!</p>
                         </div>
                     </div>
                 }

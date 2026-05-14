@@ -10,19 +10,19 @@ const RightNavbar = () => {
             <Link
                 viewTransition
                 to="/"
-                className={cn(buttonVariants({ variant: "secondary", className: "w-full flex flex-row items-center justify-center md:justify-start gap-2 bg-card hover:bg-indigo-900 transition-colors duration-300" }))}
+                className={cn(buttonVariants({ variant: "secondary", className: "w-full flex flex-row items-center justify-start gap-2 bg-card hover:bg-indigo-900 transition-colors duration-300" }))}
             >
                 <HomeIcon className="size-5" />
-                <span className="hidden md:inline">Home</span>
+                <span className="truncate">Home</span>
             </Link>
             <SignedIn>
                 <Link
                     viewTransition
                     to="/chat"
-                    className={cn(buttonVariants({ variant: "secondary", className: "w-full flex flex-row items-center justify-center md:justify-start gap-2 bg-card hover:bg-indigo-900 transition-colors duration-300" }))}
+                    className={cn(buttonVariants({ variant: "secondary", className: "w-full flex flex-row items-center justify-start gap-2 bg-card hover:bg-indigo-900 transition-colors duration-300" }))}
                 >
                     <MessageCircle className="size-5" />
-                    <span className="hidden md:inline">Chat</span>
+                    <span className="truncate">Chat</span>
                 </Link>
             </SignedIn>
         </div>

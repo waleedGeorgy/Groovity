@@ -5,10 +5,10 @@ import { Button } from "../ui/button";
 
 const AdminHeader = () => {
     return (
-        <div className='flex items-center flex-wrap justify-between gap-2'>
+        <div className='flex items-center justify-between gap-2'>
             <div className='flex flex-row items-center gap-2 text-neutral-200'>
-                <LayoutDashboard className="shrink-0 size-7" />
-                <h1 className='text-3xl font-roboto font-semibold truncate'>Admin Dashboard</h1>
+                <LayoutDashboard className="shrink-0 sm:size-7 size-5" />
+                <h1 className='sm:text-3xl text-xl font-roboto font-semibold truncate'>Admin Dashboard</h1>
             </div>
             <div className="flex flex-row items-center gap-3">
                 <Button variant="outline" size="sm" asChild>

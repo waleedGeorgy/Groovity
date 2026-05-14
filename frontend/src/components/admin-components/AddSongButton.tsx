@@ -89,7 +89,7 @@ const AddSongButton = () => {
         <Dialog>
             <DialogTrigger asChild>
                 <Button size="sm" className="cursor-pointer bg-emerald-500 hover:bg-emerald-400">
-                    <PlusCircle /><span>Add Song</span>
+                    <PlusCircle /><span className="hidden sm:inline-block">Add Song</span>
                 </Button>
             </DialogTrigger>
             <DialogContent>
