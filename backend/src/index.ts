@@ -11,6 +11,7 @@ import path from "path";
 import { createServer } from "http";
 import cron from "node-cron";
 import fs from "fs";
+import rateLimit from "express-rate-limit";
 import { connectDB } from "./lib/db.ts";
 import { initializeSocket } from "./lib/socket.ts";
 import userRoutes from "./routes/user.route.ts";
@@ -26,11 +27,23 @@ const __dirname = path.resolve();
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,
+  message: {
+    status: 429,
+    error: "Too many requests, please try again later.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const server = createServer(app);
 initializeSocket(server);
 
 app.use(express.json({ limit: "15mb" }));
 app.use(clerkMiddleware());
+app.use(limiter);
 app.use(
   fileUpload({
     useTempFiles: true,
