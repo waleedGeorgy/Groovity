@@ -52,7 +52,7 @@ const SongsTab = () => {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-card from-60% to to-amber-950 to-100%">
+    <Card>
       <CardHeader>
         <div className="flex flex-row items-center justify-between gap-1">
           <h2 className="flex items-center gap-1 sm:text-2xl text-xl font-roboto">

@@ -51,11 +51,11 @@ const AlbumsTab = () => {
     }
 
     return (
-        <Card className="bg-gradient-to-br from-card from-60% to to-teal-950 to-100%">
+        <Card>
             <CardHeader>
                 <div className="flex flex-row items-center justify-between gap-1">
                     <h2 className="flex items-center gap-1 sm:text-2xl text-xl font-roboto">
-                        <Library className="sm:inline hidden size-5 text-indigo-500" />Albums library
+                        <Library className="sm:inline hidden size-6 text-indigo-500" />Albums library
                     </h2>
                     <AddAlbumButton />
                 </div>
