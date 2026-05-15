@@ -5,6 +5,7 @@ import { Album } from "../models/album.model.ts";
 import { Song } from "../models/song.model.ts";
 import { User } from "../models/user.model.ts";
 import { cloudinaryUploader } from "../lib/cloudinary.ts";
+import mongoose from "mongoose";
 
 export const createSong = async (
   req: Request<
@@ -64,9 +65,17 @@ export const createSong = async (
     await song.save();
 
     if (albumID) {
-      await Album.findByIdAndUpdate(albumID, {
-        $push: { songs: song._id },
-      });
+      if (!mongoose.Types.ObjectId.isValid(albumID)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid album ID format",
+        });
+      }
+
+      await Album.findOneAndUpdate(
+        { _id: { $eq: albumID } },
+        { $push: { songs: song._id } },
+      );
     }
 
     res.status(201).json({ success: true, message: "Song added successfully" });
@@ -95,9 +104,10 @@ export const deleteSong = async (
         .json({ success: false, message: "Song does not exist" });
 
     if (song.albumID) {
-      await Album.findByIdAndUpdate(song.albumID, {
-        $pull: { songs: song._id },
-      });
+      await Album.findOneAndUpdate(
+        { _id: { $eq: song.albumID } },
+        { $pull: { songs: song._id } },
+      );
     }
 
     await Song.findByIdAndDelete(songID);

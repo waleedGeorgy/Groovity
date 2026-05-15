@@ -16,7 +16,7 @@ export const authCallback = async (
   try {
     const { id, firstName, lastName, imageUrl } = req.body;
 
-    const user = await User.findOne({ clerkID: id });
+    const user = await User.findOne({ clerkID: { $eq: id } });
     if (!user) {
       await User.create({
         clerkID: id,
