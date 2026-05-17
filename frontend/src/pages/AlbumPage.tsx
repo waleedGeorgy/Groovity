@@ -105,55 +105,53 @@ const AlbumPage = () => {
 
     return (
         <div className="h-full rounded-lg border">
-            <ScrollArea className="h-full">
-                <div
-                    className="p-6 rounded-lg flex flex-row items-end justify-start gap-4"
-                    style={{
-                        background: `linear-gradient(to bottom, ${backgroundColor}, var(--color-background))`
-                    }}
-                >
-                    {!isLoading ?
-                        <>
-                            <img className="size-60 rounded border object-cover" src={currentAlbum?.imageURL} alt={currentAlbum?.title} />
-                            <div className="flex flex-col justify-center gap-1">
-                                <h3 className="flex items-center gap-1 truncate md:text-xl text-base"><UserStar className="md:size-5 size-4" />{currentAlbum?.artist}</h3>
-                                <h2 className="lg:text-7xl md:text-6xl text-4xl font-roboto font-bold tracking-tight py-1">{currentAlbum?.title}</h2>
-                                <div className="flex flex-row gap-x-5 items-center ml-1 text-sm">
-                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Disc3 className="md:size-3.5 size-3" />{currentAlbum?.songs.length} Songs</span>
-                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Clock4 className="md:size-3.5 size-3" />{albumDuration()}</span>
-                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Calendar1 className="md:size-3.5 size-3" />{currentAlbum?.releaseYear}</span>
-                                    <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><FilePlus className="md:size-3.5 size-3" />{new Date(currentAlbum?.createdAt.split("T")[0] ?? new Date()).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
-                                </div>
+            <div
+                className="p-6 rounded-lg flex flex-row items-end justify-start gap-4"
+                style={{ background: `linear-gradient(to bottom, ${backgroundColor}, var(--color-background))` }}
+            >
+                {!isLoading ?
+                    <>
+                        <img className="size-60 rounded border object-cover" src={currentAlbum?.imageURL} alt={currentAlbum?.title} />
+                        <div className="flex flex-col justify-center gap-1">
+                            <h3 className="flex items-center gap-1 truncate md:text-xl text-base"><UserStar className="md:size-5 size-4" />{currentAlbum?.artist}</h3>
+                            <h2 className="lg:text-7xl md:text-6xl text-4xl font-roboto font-bold tracking-tight py-1">{currentAlbum?.title}</h2>
+                            <div className="flex flex-row gap-x-5 items-center ml-1 text-sm">
+                                <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Disc3 className="md:size-3.5 size-3" />{currentAlbum?.songs.length} Songs</span>
+                                <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Clock4 className="md:size-3.5 size-3" />{albumDuration()}</span>
+                                <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><Calendar1 className="md:size-3.5 size-3" />{currentAlbum?.releaseYear}</span>
+                                <span className="flex items-center gap-1 opacity-75 truncate md:text-base text-sm"><FilePlus className="md:size-3.5 size-3" />{new Date(currentAlbum?.createdAt.split("T")[0] ?? new Date()).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span>
                             </div>
-                        </>
-                        :
-                        <AlbumHeaderSkeleton />
-                    }
-                </div>
-                <div className="mb-4 ml-6">
-                    <Button
-                        size='icon'
-                        onClick={handleAlbumPlay}
-                        className='size-10 rounded-full bg-emerald-500 hover:bg-emerald-400 hover:scale-110 transition-all duration-200 cursor-pointer'
-                        disabled={isLoading || currentAlbum?.songs.length === 0}
-                    >
-                        {isSongPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ?
-                            <Pause className="size-4" /> : <Play className='size-4' />
-                        }
-                    </Button>
-                </div>
-                {isLoading ?
-                    <AlbumTableSkeleton />
-                    :
-                    currentAlbum?.songs.length === 0 ?
-                        <div className="h-full flex flex-col items-center justify-center gap-2 mt-8">
-                            <h2 className="font-roboto text-3xl">This album is empty!</h2>
-                            <p className="opacity-60 text-lg font-semibold">If authorized, please add songs to this album.</p>
                         </div>
-                        :
-                        <Table>
+                    </>
+                    :
+                    <AlbumHeaderSkeleton />
+                }
+            </div>
+            <div className="mb-4 ml-6">
+                <Button
+                    size='icon'
+                    onClick={handleAlbumPlay}
+                    className='size-10 rounded-full bg-emerald-500 hover:bg-emerald-400 hover:scale-110 transition-all duration-200 cursor-pointer'
+                    disabled={isLoading || currentAlbum?.songs.length === 0}
+                >
+                    {isSongPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ?
+                        <Pause className="size-4" /> : <Play className='size-4' />
+                    }
+                </Button>
+            </div>
+            {isLoading ?
+                <AlbumTableSkeleton />
+                :
+                currentAlbum?.songs.length === 0 ?
+                    <div className="h-full flex flex-col items-center justify-center gap-2 mt-8">
+                        <h2 className="font-roboto text-3xl">This album is empty!</h2>
+                        <p className="opacity-60 text-lg font-semibold">If authorized, please add songs to this album.</p>
+                    </div>
+                    :
+                    <Table>
+                        <ScrollArea className="h-70.75 rounded-lg">
                             <TableHeader>
-                                <TableRow className="font-roboto text-base p-4 opacity-60">
+                                <TableRow className="font-roboto text-base p-4 opacity-75">
                                     <TableHead><span className="flex items-center gap-1"><Hash className="size-4 inline" /></span></TableHead>
                                     <TableHead><span className="flex items-center gap-1"><Disc3 className="size-4 inline" />Title</span></TableHead>
                                     <TableHead><span className="flex items-center gap-1"><UserStar className="size-4 inline" />Artist</span></TableHead>
@@ -166,7 +164,7 @@ const AlbumPage = () => {
                                     return (
                                         <TableRow
                                             key={song._id}
-                                            className={`cursor-pointer group ${isCurrentSong && "bg-gradient-to-r from-background  to-indigo-900"}`}
+                                            className={`cursor-pointer group ${isCurrentSong && "bg-linear-to-r from-background  to-indigo-900"}`}
                                             onClick={() => handleSongPlay(id)}
                                         >
                                             <TableCell className="w-14">
@@ -195,9 +193,9 @@ const AlbumPage = () => {
                                     <TableCell className="text-right font-bold">{albumDuration()}</TableCell>
                                 </TableRow>
                             </TableFooter>
-                        </Table>
-                }
-            </ScrollArea>
+                        </ScrollArea>
+                    </Table>
+            }
         </div>
     )
 }
