@@ -32,7 +32,7 @@ export const AlbumTableSkeleton = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {[...Array<React.ReactNode>(4)].map((_, id) => (
+        {[...Array<React.ReactNode>(3)].map((_, id) => (
           <TableRow key={id} className="cursor-pointer group">
             <TableCell className="w-14">
               <Skeleton className="size-4" />
