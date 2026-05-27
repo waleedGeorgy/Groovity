@@ -1,3 +1,6 @@
 allowBuilds:
-  '@clerk/shared': true
+  "@clerk/shared": true
   esbuild: true
+overrides:
+  js-cookie: ">=3.0.6"
+  ws: ">=8.20.1"
