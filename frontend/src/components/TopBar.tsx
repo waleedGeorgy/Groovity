@@ -17,14 +17,14 @@ const TopBar = () => {
                 <h1 className="font-roboto font-bold text-xl md:text-2xl tracking-wide">Groovity</h1>
             </div>
             <div className="flex items-center justify-center gap-3">
-                {isAdmin && (
+                {isAdmin &&
                     <Button asChild variant="outline" size="sm">
                         <Link viewTransition to="/admin" className="flex items-center justify-center gap-2">
                             <LayoutDashboard className="md:size-4 size-3.5" />
                             <span className="md:inline-block hidden">Admin Dashboard</span>
                         </Link>
                     </Button>
-                )}
+                }
                 <SignedOut>
                     <SignInWithGoogleButton />
                 </SignedOut>

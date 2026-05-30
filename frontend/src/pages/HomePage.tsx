@@ -38,7 +38,7 @@ const HomePage = () => {
     }, [featuredSongs, personalizedSongs, trendingSongs, initializeSongsQueue]);
 
     return (
-        <div className="border border-muted rounded-lg overflow-hidden bg-gradient-to-b from-card from-10% to-indigo-950">
+        <div className="border border-muted rounded-lg overflow-hidden bg-linear-to-b from-card from-10% to-indigo-950">
             <TopBar />
             <ScrollArea className="h-[calc(100vh-(158px))]">
                 <FeaturedSongsSection

@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { Loader, PlusCircle } from "lucide-react"
+import { useShallow } from "zustand/react/shallow"
+import type { AxiosError } from "axios"
 import { axiosInstance } from "@/lib/axios"
 import { createToast } from "@/functions"
+import { useMusicStore } from "@/stores/useMusicStore"
 import type { ApiError, ApiResponse } from "@/types"
 import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import type { AxiosError } from "axios"
-import { useMusicStore } from "@/stores/useMusicStore"
-import { useShallow } from "zustand/react/shallow"
 
 const AddAlbumButton = () => {
     const [isFormSubmitting, setIsFormSubmitting] = useState(false);

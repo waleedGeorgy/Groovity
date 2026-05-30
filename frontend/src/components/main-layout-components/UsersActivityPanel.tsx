@@ -38,7 +38,7 @@ const UsersActivityPanel = () => {
                                     No one's here
                                 </span>
                                 :
-                                users.map((user) => {
+                                users.map(user => {
                                     const activity = usersActivity.get(user.clerkID);
                                     const isPlaying = activity && activity !== "Idle"
 
@@ -92,7 +92,8 @@ const UsersActivityPanel = () => {
                     <div className='relative'>
                         <div
                             className='absolute -inset-1 bg-conic from-indigo-500 via-emerald-500 to-yellow-500 rounded-full blur-md opacity-85 animate-spin'
-                            aria-hidden="true" />
+                            aria-hidden="true"
+                        />
                         <div className='relative bg-card rounded-full p-4'>
                             <Headphones className='size-8 text-indigo-500' />
                         </div>

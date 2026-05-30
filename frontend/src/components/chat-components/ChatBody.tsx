@@ -44,9 +44,7 @@ const ChatBody = () => {
                             className={`flex items-start gap-3 ${message.senderID === user?.id && "flex-row-reverse"}`}
                         >
                             <Avatar className='size-7'>
-                                <AvatarImage
-                                    src={message.senderID === user?.id ? user?.imageUrl : selectedUser?.imageURL}
-                                />
+                                <AvatarImage src={message.senderID === user?.id ? user?.imageUrl : selectedUser?.imageURL} />
                                 <AvatarFallback>
                                     {message.senderID === user?.id ? user?.fullName?.[0] : selectedUser?.name[0]}
                                 </AvatarFallback>

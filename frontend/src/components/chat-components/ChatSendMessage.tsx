@@ -28,8 +28,8 @@ const ChatSendMessage = () => {
                 <Input
                     placeholder='Enter a message...'
                     value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                    onChange={e => setNewMessage(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleSendMessage()}
                     className="border-none"
                     autoFocus
                 />

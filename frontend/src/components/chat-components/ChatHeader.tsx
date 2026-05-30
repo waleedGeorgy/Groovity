@@ -24,7 +24,7 @@ const ChatHeader = () => {
                     </Avatar>
                     <div className="flex flex-col justify-center">
                         <h2 className="hidden sm:text-xs sm:inline-block md:text-sm font-semibold">{selectedUser?.name}</h2>
-                        <p className="hidden sm:inline-block text-xs">{onlineUsers.has(selectedUser?.clerkID) ? ("Online") : ("Offline")}</p>
+                        <span className="hidden sm:inline-block text-xs">{onlineUsers.has(selectedUser?.clerkID) ? ("Online") : ("Offline")}</span>
                     </div>
                 </div>
                 <div>

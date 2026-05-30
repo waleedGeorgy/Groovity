@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useShallow } from "zustand/react/shallow"
 import { Loader, PlusCircle } from "lucide-react"
+import type { AxiosError } from "axios"
 import { axiosInstance } from "@/lib/axios"
 import { useMusicStore } from "@/stores/useMusicStore"
 import type { ApiError, ApiResponse } from "@/types"
@@ -10,7 +11,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { Button } from "../ui/button"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
-import type { AxiosError } from "axios"
 
 const AddSongButton = () => {
     const { albums } = useMusicStore(useShallow(state => ({ albums: state.albums })));
@@ -128,7 +128,7 @@ const AddSongButton = () => {
                                     <SelectLabel>No album</SelectLabel>
                                     <SelectItem value="none">Single</SelectItem>
                                     <SelectLabel>Available albums</SelectLabel>
-                                    {albums.map((album) => (
+                                    {albums.map(album => (
                                         <SelectItem value={album._id} key={album._id}>
                                             {album.title}
                                         </SelectItem>

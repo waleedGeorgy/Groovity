@@ -1,3 +1,4 @@
+import { useShallow } from "zustand/react/shallow"
 import { Trash2, Disc3, UserStar, Settings, Music2, Clock4, Loader2 } from "lucide-react"
 import { useMusicStore } from "@/stores/useMusicStore"
 import { durationInMinutes } from "@/functions"
@@ -6,7 +7,6 @@ import { Card, CardContent, CardHeader } from "../ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { ScrollArea } from "../ui/scroll-area"
 import AddSongButton from "./AddSongButton"
-import { useShallow } from "zustand/react/shallow"
 
 const SongsTab = () => {
   const { songs, isAllSongsLoading, error, deleteSong, isDeleting } = useMusicStore(useShallow(state => ({
